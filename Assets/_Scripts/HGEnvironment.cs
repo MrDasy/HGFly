@@ -104,5 +104,11 @@ public class HGBlock {
 }
 
 public enum HGBlockType {
-    Mode_Flypee,Mode_Start,Mode_Pause,Mode_End
+	//模式
+    Mode_Flypee,
+	Mode_SkyBattle,
+	//状态
+	Mode_Start,
+	Mode_Pause,
+	Mode_End
 }

@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 1443065361
+CRC: 3713620643
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 1b9bbaa3bb63e036a23391e5d9675690
+    Hash: 12b0047dc8957046a80da405b0fb7eb8
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 9b3d2ec62b5c8c636bba6b7282478a2d
+    Hash: b55b2e8ab4fdb3ab7d82db02f6568e77
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -23,23 +23,38 @@ ClassTypes:
   Script: {instanceID: 0}
 - Class: 48
   Script: {instanceID: 0}
+- Class: 54
+  Script: {instanceID: 0}
 - Class: 65
   Script: {instanceID: 0}
+- Class: 75
+  Script: {instanceID: 0}
 - Class: 82
+  Script: {instanceID: 0}
+- Class: 90
+  Script: {instanceID: 0}
+- Class: 95
   Script: {instanceID: 0}
 - Class: 114
   Script: {fileID: 11500000, guid: b516be135ca858e4c8be71d9a7b4b359, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: 5bc1a6ff33ce5c94c8eac630c6741f81, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: be32ada7536b40944bcd8ff93cd24fb1, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 6c8efc21941413148a36643f8ccfd3a5, type: 3}
 - Class: 115
+  Script: {instanceID: 0}
+- Class: 134
+  Script: {instanceID: 0}
+- Class: 135
   Script: {instanceID: 0}
 - Class: 136
   Script: {instanceID: 0}
 Assets:
-- Assets/_Resourses/_Materials/MatCoin.mat
+- Assets/_Resourses/_Prefabs/Missile_.prefab
 - Assets/_Resourses/_Prefabs/Start_Prefab.prefab
 - Assets/_Resourses/_Prefabs/Flypee_Prefab.prefab
-- Assets/_Resourses/_Materials/MatGround_1.mat
+- Assets/_Resourses/_Prefabs/SkyBattle_Prefab.prefab
 - Assets/_Resourses/_Prefabs/Coins_.prefab
-- Assets/_Resourses/_Materials/MatOb_1.mat
 Dependencies: []
