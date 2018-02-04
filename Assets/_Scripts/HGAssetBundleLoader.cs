@@ -12,8 +12,10 @@ public class HGAssetBundleLoader : MonoBehaviour {
                     "jar:file://" + Application.dataPath + "!/assets/";
 #elif UNITY_IPHONE
                     Application.dataPath + "/Raw/";  
-#elif UNITY_STANDALONE_WIN || UNITY_EDITOR
-                    "file://" + Application.dataPath + "/_AssetBundles/";
+#elif UNITY_STANDALONE_WIN
+                    "file://" + Application.dataPath + "/StreamingAssets/";
+#elif UNITY_EDITOR
+					"file://" + Application.dataPath + "/_AssetBundles/";
 #else
                     string.Empty;  
 #endif
