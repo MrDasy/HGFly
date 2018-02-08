@@ -31,13 +31,14 @@ public class HGEnvironment : MonoBehaviour {
 		while (HGBlock.CoinQueue.Count > 0)
 			HGObjectPool.GetIns().Depool(HGBlock.CoinQueue.Dequeue());
 		GameObject objTemp = HGObjectPool.GetIns().Enpool(HGBlock.getBlock(HGBlockType.Mode_Start) as GameObject);
-		objTemp.GetComponent<Transform>().position = new Vector3(posX++*width,0f,0f);
+		objTemp.GetComponent<Transform>().position = new Vector2(posX++*width,0f);
 		objTemp.transform.SetParent(EnvironEntity.transform);
 		HGBlock.BlockQueue.Enqueue(objTemp);
 		GameObject objTemp2 = HGBlock.getBlock(HGBlockType.Mode_Flypee) as GameObject;
 		while (posX <= 2) {
 			GameObject objTemp1 = HGObjectPool.GetIns().Enpool(objTemp2);
-			objTemp1.GetComponent<Transform>().position = new Vector3(posX++ * width, 0f, 0f);
+			objTemp1.transform.Find("ModeUpdater").GetComponent<Collider2D>().enabled = true;
+			objTemp1.GetComponent<Transform>().position = new Vector2(posX++ * width, 0f);
 			HGBlock.FlypeeSetup(ref objTemp1,blank);
 			objTemp1.transform.SetParent(EnvironEntity.transform);
 			HGBlock.BlockQueue.Enqueue(objTemp1);
@@ -48,7 +49,7 @@ public class HGEnvironment : MonoBehaviour {
 		if (passed <= 1) return;
 		HGObjectPool.GetIns().Depool(HGBlock.BlockQueue.Dequeue());
 		GameObject objTemp1 = HGObjectPool.GetIns().Enpool(HGBlock.getBlock(HGBlockType.Mode_Flypee) as GameObject);
-		objTemp1.GetComponent<Transform>().position = new Vector3(posX++ * width, 0f, 0f);
+		objTemp1.GetComponent<Transform>().position = new Vector2(posX++ * width, 0f);
 		HGBlock.FlypeeSetup(ref objTemp1, blank);
 		objTemp1.transform.SetParent(EnvironEntity.transform);
 		HGBlock.BlockQueue.Enqueue(objTemp1);
@@ -73,8 +74,8 @@ public class HGBlock {
 		float t;
 		for (int i = 1; i <= 3; i++) {
 			t = (float)ra.Next(20, 200) / 100f * 3f;
-			target.transform.Find(System.String.Format("Ob{0}", i)).GetComponent<Transform>().localScale = new Vector3(3f, t, 3f);
-			target.transform.Find(System.String.Format("Ob{0} (1)", i)).GetComponent<Transform>().localScale = new Vector3(3f, 10f - t - blank, 3f);
+			target.transform.Find(System.String.Format("Ob{0}", i)).GetComponent<Transform>().localScale = new Vector2(1f, t);
+			target.transform.Find(System.String.Format("Ob{0} (1)", i)).GetComponent<Transform>().localScale = new Vector2(1f, 10f - t - blank);
 			CoinSetup(target.transform.Find(System.String.Format("Ob{0}", i)).transform.position.x,t,3);
 		}
 	}
@@ -83,7 +84,8 @@ public class HGBlock {
 		GameObject coinT;
 		for (int i = -1; i <= -2+num;i++) {
 			coinT = HGObjectPool.GetIns().Enpool(coin);
-			coinT.transform.position = new Vector3(posx+HGEnvironment.width/(3*num)*i,posy+(float)ra.Next(50,150)/100*HGEnvironment.blank/2);
+			coinT.transform.GetChild(0).GetComponent<Collider2D>().enabled = true;
+			coinT.transform.position = new Vector2(posx+HGEnvironment.width/(3*num)*i,posy+(float)ra.Next(50,150)/100*HGEnvironment.blank/2);
 			coinT.transform.SetParent(GameObject.FindWithTag("Environment_").transform);
 			coinT.transform.GetChild(0).gameObject.GetComponent<Renderer>().enabled = true;
 			CoinQueue.Enqueue(coinT);

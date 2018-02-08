@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 3713620643
+CRC: 4271480625
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 12b0047dc8957046a80da405b0fb7eb8
+    Hash: 78e20228b1f9d76fa5c2869cebf5d63b
   TypeTreeHash:
     serializedVersion: 2
-    Hash: b55b2e8ab4fdb3ab7d82db02f6568e77
+    Hash: ed12309dec6bca72d1dd23892fc3e039
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -17,6 +17,8 @@ ClassTypes:
   Script: {instanceID: 0}
 - Class: 23
   Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
 - Class: 33
   Script: {instanceID: 0}
 - Class: 43
@@ -24,6 +26,10 @@ ClassTypes:
 - Class: 48
   Script: {instanceID: 0}
 - Class: 54
+  Script: {instanceID: 0}
+- Class: 61
+  Script: {instanceID: 0}
+- Class: 62
   Script: {instanceID: 0}
 - Class: 65
   Script: {instanceID: 0}
@@ -36,25 +42,34 @@ ClassTypes:
 - Class: 95
   Script: {instanceID: 0}
 - Class: 114
-  Script: {fileID: 11500000, guid: b516be135ca858e4c8be71d9a7b4b359, type: 3}
+  Script: {fileID: 11500000, guid: 6c8efc21941413148a36643f8ccfd3a5, type: 3}
 - Class: 114
-  Script: {fileID: 11500000, guid: 5bc1a6ff33ce5c94c8eac630c6741f81, type: 3}
+  Script: {fileID: 11500000, guid: b516be135ca858e4c8be71d9a7b4b359, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: be32ada7536b40944bcd8ff93cd24fb1, type: 3}
 - Class: 114
-  Script: {fileID: 11500000, guid: 6c8efc21941413148a36643f8ccfd3a5, type: 3}
+  Script: {fileID: 11500000, guid: 5bc1a6ff33ce5c94c8eac630c6741f81, type: 3}
 - Class: 115
   Script: {instanceID: 0}
 - Class: 134
   Script: {instanceID: 0}
 - Class: 135
   Script: {instanceID: 0}
-- Class: 136
+- Class: 212
+  Script: {instanceID: 0}
+- Class: 213
   Script: {instanceID: 0}
 Assets:
 - Assets/_Resourses/_Prefabs/Missile_.prefab
+- Assets/_Resourses/_Textures/squad.psd
 - Assets/_Resourses/_Prefabs/Start_Prefab.prefab
+- Assets/_Resourses/_Textures/Background1.psd
 - Assets/_Resourses/_Prefabs/Flypee_Prefab.prefab
+- Assets/_Resourses/_Textures/coin.psd
 - Assets/_Resourses/_Prefabs/SkyBattle_Prefab.prefab
 - Assets/_Resourses/_Prefabs/Coins_.prefab
+- Assets/_Resourses/_PhysicMat/Ob.physicsMaterial2D
+- Assets/_Resourses/_Textures/niao.png
+- Assets/_Resourses/_Textures/ObUp.psd
+- Assets/_Resourses/_Textures/ObDown.psd
 Dependencies: []

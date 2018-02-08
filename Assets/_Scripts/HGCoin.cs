@@ -3,19 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class HGCoin : MonoBehaviour {
-	//数值配置----------
-	[SerializeField] private float RotateSpeed;
-	//--------------------
 
 	// Update is called once per frame
-	void Update () {
-		transform.Rotate(Vector3.down * RotateSpeed, Space.World);
-	}
-
-	void OnTriggerEnter(Collider col) {
+	void OnTriggerEnter2D(Collider2D col) {
+		GetComponent<Collider2D>().enabled = false;
 		GetComponent<AudioSource>().enabled = true;
 		GetComponent<AudioSource>().clip = HGAudioLoader.Load("get_coin");
-		GetComponent<AudioSource>().Play();
+		 GetComponent<AudioSource>().Play();
 		//transform.parent.gameObject.SetActive(false);
 		transform.gameObject.GetComponent<Renderer>().enabled = false;
 		GameObject.FindWithTag("Character_").GetComponent<HGCharacter>().UpdateScore();

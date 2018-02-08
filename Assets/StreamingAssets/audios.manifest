@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 4120147366
+CRC: 2202280640
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 75049b01e2aa27bd5472fe107eea56c0
+    Hash: 55aa7227f5bac66d317fa8c4fa927804
   TypeTreeHash:
     serializedVersion: 2
     Hash: 3f7d0c5e0986ec71841622bcb2f9be1c
@@ -16,5 +16,6 @@ Assets:
 - Assets/_Resourses/_Audios/get_coin.wav
 - Assets/_Resourses/_Audios/jump.wav
 - Assets/_Resourses/_Audios/hit.wav
+- Assets/_Resourses/_Audios/boom.wav
 - Assets/_Resourses/_Audios/hg_lyff.mp3
 Dependencies: []

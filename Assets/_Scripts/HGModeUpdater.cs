@@ -14,8 +14,9 @@ public class HGModeUpdater : MonoBehaviour {
 		
 	}
 
-    void OnTriggerEnter(Collider collider) {
+    void OnTriggerEnter2D(Collider2D collider) {
 		print("mode updated\n");
+		GetComponent<Collider2D>().enabled = false;
 		GameObject.FindWithTag("Environment_").GetComponent<HGEnvironment>().Environ_Update();
     }
 }

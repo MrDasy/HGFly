@@ -33,7 +33,7 @@ public class HGAssetBundleLoader : MonoBehaviour {
 			WWW loader = new WWW(BundleURL + FileName);
 			bundle = loader.assetBundle;
 			bundles.Add(FileName, bundle);
-		} else print("matched");
+		} //else print("matched");
 		return bundle;
 	}
 
