@@ -14,8 +14,11 @@ public class HGCharacter : MonoBehaviour {
      //-------------------
 
     public void UpdateMode(HGBlockType mode) {
-        GameMode = mode;
-    }
+		if (GameMode != mode) {
+			GetComponent<HGCharacterController>().UpdateModeOp(mode);
+			GameMode = mode;
+		}
+	}
     public HGBlockType GetMode() {
         return GameMode;
     }

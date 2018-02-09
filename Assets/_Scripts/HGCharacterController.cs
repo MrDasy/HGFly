@@ -20,12 +20,15 @@ public class HGCharacterController : MonoBehaviour {
 
     HGCharacter Charc;
 	GameObject Environ;
-    // Use this for initialization
+	string[] ModeOp = new string[11];
+	// Use this for initialization
 
 	void Start() {
 		Charc = this.gameObject.GetComponent<HGCharacter>();
 		Environ = GameObject.FindWithTag("Environment_");
 		Charc.transform.position = new Vector2(0f, HeightInitialize);
+		ModeOp[0] = "HGi_flypee";
+		ModeOp[1] = "HGi_Sky";
 	}
 
 	// Update is called once per frame
@@ -42,11 +45,14 @@ public class HGCharacterController : MonoBehaviour {
 				HGc_mode_flypee();
                 break;
             case HGBlockType.Mode_Start:
-                Charc.UpdateMode(MODEINIT);
+                Charc.UpdateMode(Charc.GetMode());
                 break;
             case HGBlockType.Mode_End:
 				HGc_mode_end();
                 break;
+			case HGBlockType.Mode_SkyBattle:
+				HGc_mode_sky();
+				break;
             default:
                 break;
         }
@@ -92,9 +98,7 @@ public class HGCharacterController : MonoBehaviour {
 			Time.timeScale = 1;
 			print("Started\n");
 			StartCoroutine("AutoAddSpeed");
-			GetComponent<ConstantForce2D>().force = new Vector2(0f, Gravity);
-			GetComponent<Rigidbody2D>().velocity = new Vector2(MoveSpeedInitialize, 0f);
-			Charc.UpdateMode(HGBlockType.Mode_Start);
+			Charc.UpdateMode(MODEINIT);
 		}
 	}
 	void HGc_mode_flypee() {
@@ -109,5 +113,30 @@ public class HGCharacterController : MonoBehaviour {
 			Time.timeScale = 0;
 			Charc.UpdateMode(HGBlockType.Mode_Pause);
 		}
+	}
+	void HGc_mode_sky() {
+		if (Input.GetButtonDown("Jump")) {
+			GetComponent<AudioSource>().clip = HGAudioLoader.Load("jump");
+			GetComponent<AudioSource>().Play();
+			Vector2 VecTemp = new Vector2(0f, (GetComponent<Rigidbody2D>().velocity.y < JumpSpeedLimit ? JumpForce : 0f));
+			GetComponent<Rigidbody2D>().AddForce(VecTemp);
+		}
+		if (Input.GetButtonDown("Pause")) {
+			print("Paused\n");
+			Time.timeScale = 0;
+			Charc.UpdateMode(HGBlockType.Mode_Pause);
+		}
+	}
+
+	public void UpdateModeOp(HGBlockType mode) {
+		print((int)mode);
+		if ((int)mode<8) Invoke(ModeOp[(int)mode], 0f);
+	}
+	void HGi_flypee() {
+		GetComponent<ConstantForce2D>().force = new Vector2(0f, Gravity);
+		GetComponent<Rigidbody2D>().velocity = new Vector2(MoveSpeedInitialize, 0f);
+	}
+	void HGi_Sky() {
+
 	}
 }

@@ -6,7 +6,8 @@ public class HGEnvironment : MonoBehaviour {
     //数值配置----------
     public static float width = 30.0f;
 	public static float blank = 4f;
-    //--------------------
+	public string seed = "000";
+	//--------------------
 	int posX = 0;
 	int passed = 0;
 	GameObject CharacterEntity,EnvironEntity;
@@ -30,29 +31,47 @@ public class HGEnvironment : MonoBehaviour {
 			HGObjectPool.GetIns().Depool(HGBlock.BlockQueue.Dequeue());
 		while (HGBlock.CoinQueue.Count > 0)
 			HGObjectPool.GetIns().Depool(HGBlock.CoinQueue.Dequeue());
-		GameObject objTemp = HGObjectPool.GetIns().Enpool(HGBlock.getBlock(HGBlockType.Mode_Start) as GameObject);
-		objTemp.GetComponent<Transform>().position = new Vector2(posX++*width,0f);
-		objTemp.transform.SetParent(EnvironEntity.transform);
-		HGBlock.BlockQueue.Enqueue(objTemp);
-		GameObject objTemp2 = HGBlock.getBlock(HGBlockType.Mode_Flypee) as GameObject;
-		while (posX <= 2) {
-			GameObject objTemp1 = HGObjectPool.GetIns().Enpool(objTemp2);
-			objTemp1.transform.Find("ModeUpdater").GetComponent<Collider2D>().enabled = true;
-			objTemp1.GetComponent<Transform>().position = new Vector2(posX++ * width, 0f);
-			HGBlock.FlypeeSetup(ref objTemp1,blank);
-			objTemp1.transform.SetParent(EnvironEntity.transform);
-			HGBlock.BlockQueue.Enqueue(objTemp1);
-        }
+
+		GameObject BlockTemplate;
+		int modeid=-1;
+		while (posX <= 3) {
+			print((posX - 1) % (seed.Length));
+			if (posX == 0)
+				BlockTemplate = HGBlock.getBlock(HGBlockType.Mode_Start) as GameObject;
+			else {
+				modeid = (int)(seed[(posX - 1) % (seed.Length)] - '0');
+				BlockTemplate = HGBlock.getBlock((HGBlockType)modeid) as GameObject;
+			}
+			GameObject objTemp = HGObjectPool.GetIns().Enpool(BlockTemplate);
+			objTemp.GetComponent<Transform>().position = new Vector2(posX * width, 0f);
+			objTemp.transform.SetParent(EnvironEntity.transform);
+			HGBlock.BlockQueue.Enqueue(objTemp);
+			if (posX != 0) {
+				objTemp.transform.Find("ModeUpdater").GetComponent<Collider2D>().enabled = true;
+				if (modeid == 0) {
+					HGBlock.FlypeeSetup(ref objTemp, blank);
+				}
+			}
+			posX++;
+		}
     }
     public void Environ_Update() {
 		passed++;
 		if (passed <= 1) return;
 		HGObjectPool.GetIns().Depool(HGBlock.BlockQueue.Dequeue());
-		GameObject objTemp1 = HGObjectPool.GetIns().Enpool(HGBlock.getBlock(HGBlockType.Mode_Flypee) as GameObject);
-		objTemp1.GetComponent<Transform>().position = new Vector2(posX++ * width, 0f);
-		HGBlock.FlypeeSetup(ref objTemp1, blank);
-		objTemp1.transform.SetParent(EnvironEntity.transform);
-		HGBlock.BlockQueue.Enqueue(objTemp1);
+		int modeid = (int)(seed[(posX - 1) % (seed.Length)] - '0');
+		GameObject BlockTemplate = HGBlock.getBlock((HGBlockType)modeid) as GameObject;
+		GameObject objTemp = HGObjectPool.GetIns().Enpool(BlockTemplate);
+		objTemp.GetComponent<Transform>().position = new Vector2(posX * width, 0f);
+		objTemp.transform.SetParent(EnvironEntity.transform);
+		HGBlock.BlockQueue.Enqueue(objTemp);
+		if (posX != 0) {
+			objTemp.transform.Find("ModeUpdater").GetComponent<Collider2D>().enabled = true;
+			if (modeid == 0) {
+				HGBlock.FlypeeSetup(ref objTemp, blank);
+			}
+		}
+		posX++;
 		if (passed <= 2) return;
 		HGBlock.CoinSetdown(3);
 	}
@@ -67,7 +86,9 @@ public class HGBlock {
             return HGAssetBundleLoader.GetIns().GetBundle("prefabs").LoadAsset("Flypee_Prefab.prefab");
         } else if (Type == HGBlockType.Mode_Start) {
             return HGAssetBundleLoader.GetIns().GetBundle("prefabs").LoadAsset("Start_Prefab.prefab");
-        } else
+        } else if (Type == HGBlockType.Mode_SkyBattle) {
+			return HGAssetBundleLoader.GetIns().GetBundle("prefabs").LoadAsset("SkyBattle_Prefab.prefab");
+		}
             return null;
     }
 	public static void FlypeeSetup(ref GameObject target,float blank){
@@ -84,7 +105,7 @@ public class HGBlock {
 		GameObject coinT;
 		for (int i = -1; i <= -2+num;i++) {
 			coinT = HGObjectPool.GetIns().Enpool(coin);
-			coinT.transform.GetChild(0).GetComponent<Collider2D>().enabled = true;
+			coinT.transform.GetComponent<Collider2D>().enabled = true;
 			coinT.transform.position = new Vector2(posx+HGEnvironment.width/(3*num)*i,posy+(float)ra.Next(50,150)/100*HGEnvironment.blank/2);
 			coinT.transform.SetParent(GameObject.FindWithTag("Environment_").transform);
 			coinT.transform.GetChild(0).gameObject.GetComponent<Renderer>().enabled = true;
@@ -107,10 +128,10 @@ public class HGBlock {
 
 public enum HGBlockType {
 	//模式
-    Mode_Flypee,
-	Mode_SkyBattle,
+    Mode_Flypee=0,
+	Mode_SkyBattle=1,
 	//状态
-	Mode_Start,
-	Mode_Pause,
-	Mode_End
+	Mode_Start=8,
+	Mode_Pause=9,
+	Mode_End=10
 }

@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 4271480625
+CRC: 1525095971
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 78e20228b1f9d76fa5c2869cebf5d63b
+    Hash: ffd532ce87a030c44b1afc9145ea13e7
   TypeTreeHash:
     serializedVersion: 2
-    Hash: ed12309dec6bca72d1dd23892fc3e039
+    Hash: f973b9b0cb3c5a7e99c62a839ceaa242
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -15,31 +15,19 @@ ClassTypes:
   Script: {instanceID: 0}
 - Class: 21
   Script: {instanceID: 0}
-- Class: 23
-  Script: {instanceID: 0}
 - Class: 28
-  Script: {instanceID: 0}
-- Class: 33
-  Script: {instanceID: 0}
-- Class: 43
   Script: {instanceID: 0}
 - Class: 48
   Script: {instanceID: 0}
-- Class: 54
+- Class: 50
+  Script: {instanceID: 0}
+- Class: 58
   Script: {instanceID: 0}
 - Class: 61
   Script: {instanceID: 0}
 - Class: 62
   Script: {instanceID: 0}
-- Class: 65
-  Script: {instanceID: 0}
-- Class: 75
-  Script: {instanceID: 0}
 - Class: 82
-  Script: {instanceID: 0}
-- Class: 90
-  Script: {instanceID: 0}
-- Class: 95
   Script: {instanceID: 0}
 - Class: 114
   Script: {fileID: 11500000, guid: 6c8efc21941413148a36643f8ccfd3a5, type: 3}
@@ -51,10 +39,6 @@ ClassTypes:
   Script: {fileID: 11500000, guid: 5bc1a6ff33ce5c94c8eac630c6741f81, type: 3}
 - Class: 115
   Script: {instanceID: 0}
-- Class: 134
-  Script: {instanceID: 0}
-- Class: 135
-  Script: {instanceID: 0}
 - Class: 212
   Script: {instanceID: 0}
 - Class: 213
@@ -63,6 +47,7 @@ Assets:
 - Assets/_Resourses/_Prefabs/Missile_.prefab
 - Assets/_Resourses/_Textures/squad.psd
 - Assets/_Resourses/_Prefabs/Start_Prefab.prefab
+- Assets/_Resourses/_PhysicMat/Ball.physicsMaterial2D
 - Assets/_Resourses/_Textures/Background1.psd
 - Assets/_Resourses/_Prefabs/Flypee_Prefab.prefab
 - Assets/_Resourses/_Textures/coin.psd

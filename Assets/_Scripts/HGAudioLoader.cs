@@ -20,7 +20,7 @@ public class HGAudioLoader : MonoBehaviour {
 	public static AudioClip Load(string filename) {
 		AudioClip temp;
 		if (audios.TryGetValue(filename, out temp)) {
-			print("got audio");
+			//print("got audio");
 		} else print("cannot");
 		return temp;
 	}
