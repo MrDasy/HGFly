@@ -79,15 +79,17 @@ public class HGCharacterController : MonoBehaviour {
 		if (Input.GetButtonDown("Restart")) {
 			print("Reseted\n");
 			transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
-			GetComponent<Transform>().position = new Vector2(0f, HeightInitialize);
+			transform.position = new Vector2(0f, HeightInitialize);
 			GetComponent<ConstantForce2D>().force = new Vector2(0f, 0f);
 			GetComponent<Rigidbody2D>().velocity = new Vector2(0f, 0f);
+			GetComponent<Rigidbody2D>().angularVelocity = 0f;
 			Environ.GetComponent<HGEnvironment>().Environ_Init();
 			Charc.UpdateMode(HGBlockType.Mode_Pause);
 		}
 	}
 	void HGc_mode_pause() {
 		if (Input.GetButtonDown("Jump")) {
+			Time.timeScale = 1;
 			print("Started\n");
 			StartCoroutine("AutoAddSpeed");
 			GetComponent<ConstantForce2D>().force = new Vector2(0f, Gravity);
@@ -104,8 +106,7 @@ public class HGCharacterController : MonoBehaviour {
 		}
 		if (Input.GetButtonDown("Pause")) {
 			print("Paused\n");
-			GetComponent<ConstantForce2D>().force = new Vector2(0f, 0f);
-			GetComponent<Rigidbody2D>().velocity = new Vector2(0f, 0f);
+			Time.timeScale = 0;
 			Charc.UpdateMode(HGBlockType.Mode_Pause);
 		}
 	}
