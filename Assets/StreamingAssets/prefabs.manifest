@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 1525095971
+CRC: 456197063
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: ffd532ce87a030c44b1afc9145ea13e7
+    Hash: b23d9b4c76e9366833c722bf30d680ac
   TypeTreeHash:
     serializedVersion: 2
     Hash: f973b9b0cb3c5a7e99c62a839ceaa242
@@ -53,6 +53,7 @@ Assets:
 - Assets/_Resourses/_Textures/coin.psd
 - Assets/_Resourses/_Prefabs/SkyBattle_Prefab.prefab
 - Assets/_Resourses/_Prefabs/Coins_.prefab
+- Assets/_Resourses/_Textures/football.psd
 - Assets/_Resourses/_PhysicMat/Ob.physicsMaterial2D
 - Assets/_Resourses/_Textures/niao.png
 - Assets/_Resourses/_Textures/ObUp.psd

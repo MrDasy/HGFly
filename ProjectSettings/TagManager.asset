@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Environment_
   - Character_
+  - Timer_
   layers:
   - Default
   - TransparentFX

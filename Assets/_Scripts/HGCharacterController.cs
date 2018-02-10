@@ -59,15 +59,16 @@ public class HGCharacterController : MonoBehaviour {
 	}//待完善
 
     void OnCollisionEnter2D(Collision2D collision) {
-		//if (collision.gameObject.name==)
-		Charc.UpdateMode(HGBlockType.Mode_End);
-		if (collision.gameObject.name=="Ground")
+		if (collision.gameObject.name == "Ground")
 			GetComponent<AudioSource>().clip = HGAudioLoader.Load("fall");
 		else GetComponent<AudioSource>().clip = HGAudioLoader.Load("hit");
 		GetComponent<AudioSource>().Play();
+
+		Charc.UpdateMode(HGBlockType.Mode_End);
 		StopCoroutine("AutoAddSpeed");
 		GetComponent<Rigidbody2D>().velocity = new Vector2(0f, 0f);
 		GetComponent<ConstantForce2D>().force = new Vector2(0f, DropForce);
+		UITimer.StopTiming();
 	}
 	IEnumerator AutoAddSpeed() {
 		while (true) {
@@ -90,6 +91,7 @@ public class HGCharacterController : MonoBehaviour {
 			GetComponent<Rigidbody2D>().velocity = new Vector2(0f, 0f);
 			GetComponent<Rigidbody2D>().angularVelocity = 0f;
 			Environ.GetComponent<HGEnvironment>().Environ_Init();
+			UITimer.ResetTiming();
 			Charc.UpdateMode(HGBlockType.Mode_Pause);
 		}
 	}
@@ -99,6 +101,7 @@ public class HGCharacterController : MonoBehaviour {
 			print("Started\n");
 			StartCoroutine("AutoAddSpeed");
 			Charc.UpdateMode(MODEINIT);
+			UITimer.StartTiming();
 		}
 	}
 	void HGc_mode_flypee() {
@@ -111,6 +114,7 @@ public class HGCharacterController : MonoBehaviour {
 		if (Input.GetButtonDown("Pause")) {
 			print("Paused\n");
 			Time.timeScale = 0;
+			UITimer.StopTiming();
 			Charc.UpdateMode(HGBlockType.Mode_Pause);
 		}
 	}
@@ -124,6 +128,7 @@ public class HGCharacterController : MonoBehaviour {
 		if (Input.GetButtonDown("Pause")) {
 			print("Paused\n");
 			Time.timeScale = 0;
+			UITimer.StopTiming();
 			Charc.UpdateMode(HGBlockType.Mode_Pause);
 		}
 	}
@@ -134,7 +139,7 @@ public class HGCharacterController : MonoBehaviour {
 	}
 	void HGi_flypee() {
 		GetComponent<ConstantForce2D>().force = new Vector2(0f, Gravity);
-		GetComponent<Rigidbody2D>().velocity = new Vector2(MoveSpeedInitialize, 0f);
+		if (GetComponent<Rigidbody2D>().velocity==Vector2.zero) GetComponent<Rigidbody2D>().velocity = new Vector2(MoveSpeedInitialize, 0f);
 	}
 	void HGi_Sky() {
 

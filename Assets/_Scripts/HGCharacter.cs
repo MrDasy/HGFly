@@ -12,7 +12,9 @@ public class HGCharacter : MonoBehaviour {
 	private int Score=0;
 	private HGBlockType GameMode=HGBlockType.Mode_Pause;
      //-------------------
-
+	public void Start() {
+		UITimer.InitTiming(); 
+	}
     public void UpdateMode(HGBlockType mode) {
 		if (GameMode != mode) {
 			GetComponent<HGCharacterController>().UpdateModeOp(mode);
@@ -25,10 +27,10 @@ public class HGCharacter : MonoBehaviour {
 
 	public void UpdateScore() {
 		Score++;
-		ScoreUI.text = string.Format("分数:{0}",Score);
+		ScoreUI.text = string.Format("分数: {0}",Score);
 	}
 	public void ResetScore() {
 		Score = 0;
-		ScoreUI.text = string.Format("分数:{0}", Score);
+		ScoreUI.text = string.Format("分数: {0}", Score);
 	}
 }

@@ -301,7 +301,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u6D4B\u8BD5\u7248\u672C 0209a\n2018.02.09"
+  m_Text: "\u6D4B\u8BD5\u7248\u672C 0210a\n2018.02.10"
 --- !u!222 &261075781
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -579,7 +579,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u8BBE\u7F6E(\u5F85\u5B8C\u5584)"
+  m_Text: "\u8BBE\u7F6E"
 --- !u!222 &1213323708
 CanvasRenderer:
   m_ObjectHideFlags: 0

@@ -11,6 +11,7 @@ public class HGEnvironment : MonoBehaviour {
 	int posX = 0;
 	int passed = 0;
 	GameObject CharacterEntity,EnvironEntity;
+	System.Random ra = new System.Random();
 	// Use this for initialization
 	void Start () {
 		CharacterEntity = GameObject.Find("Character");
@@ -47,9 +48,15 @@ public class HGEnvironment : MonoBehaviour {
 			objTemp.transform.SetParent(EnvironEntity.transform);
 			HGBlock.BlockQueue.Enqueue(objTemp);
 			if (posX != 0) {
-				objTemp.transform.Find("ModeUpdater").GetComponent<Collider2D>().enabled = true;
+				objTemp.transform.Find("ModeUpdater").GetComponent<HGModeUpdater>().SetAval(true);
 				if (modeid == 0) {
 					HGBlock.FlypeeSetup(ref objTemp, blank);
+				}
+				else if (modeid == 1) {
+					objTemp.transform.Find("Emitter").GetComponent<HGEmitter>().Init();
+					for (int i = -1; i <= 1; i++) {
+						HGBlock.CoinSetup(objTemp.transform.position.x + 10 * i, 5, 3);
+					}
 				}
 			}
 			posX++;
@@ -66,9 +73,14 @@ public class HGEnvironment : MonoBehaviour {
 		objTemp.transform.SetParent(EnvironEntity.transform);
 		HGBlock.BlockQueue.Enqueue(objTemp);
 		if (posX != 0) {
-			objTemp.transform.Find("ModeUpdater").GetComponent<Collider2D>().enabled = true;
+			objTemp.transform.Find("ModeUpdater").GetComponent<HGModeUpdater>().SetAval(true);
 			if (modeid == 0) {
 				HGBlock.FlypeeSetup(ref objTemp, blank);
+			} else if (modeid == 1) {
+				objTemp.transform.Find("Emitter").GetComponent<HGEmitter>().Init();
+				for (int i = -1; i <= 1; i++) {
+					HGBlock.CoinSetup(objTemp.transform.position.x + 10 * i, 5, 3);
+				}
 			}
 		}
 		posX++;
