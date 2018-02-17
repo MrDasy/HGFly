@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 //控制人物移动
 public class HGCharacterController : MonoBehaviour {
@@ -17,6 +18,7 @@ public class HGCharacterController : MonoBehaviour {
 	[SerializeField] private float RotateSpeed;
 	[SerializeField] private HGBlockType MODEINIT = HGBlockType.Mode_Flypee;
 	private HGOpinion OP;
+	public GameObject GuideUI;
     //--------------------
 
     HGCharacter Charc;
@@ -32,6 +34,7 @@ public class HGCharacterController : MonoBehaviour {
 	}
 	void Start() {
 		LoadOpinion();
+		GuideUI.SetActive(false);
 		Charc = this.gameObject.GetComponent<HGCharacter>();
 		Environ = GameObject.FindWithTag("Environment_");
 		Charc.transform.position = new Vector2(0f, HeightInitialize);
@@ -107,6 +110,7 @@ public class HGCharacterController : MonoBehaviour {
 	}
 	void HGc_mode_pause() {
 		if (Input.GetButtonDown("Jump")) {
+			GuideUI.SetActive(false);
 			Time.timeScale = 1;
 			print("Started\n");
 			StartCoroutine("AutoAddSpeed");
@@ -126,6 +130,7 @@ public class HGCharacterController : MonoBehaviour {
 		if (Input.GetButtonDown("Pause")) {
 			print("Paused\n");
 			Time.timeScale = 0;
+			GuideUI.SetActive(true);
 			UITimer.StopTiming();
 			Charc.UpdateMode(HGBlockType.Mode_Pause);
 		}

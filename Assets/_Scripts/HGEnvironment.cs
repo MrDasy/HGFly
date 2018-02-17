@@ -121,7 +121,7 @@ public class HGBlock {
 			coinT.transform.GetComponent<Collider2D>().enabled = true;
 			coinT.transform.position = new Vector2(posx+HGEnvironment.width/(3*num)*i,posy+(float)ra.Next(50,150)/100*HGEnvironment.blank/2);
 			coinT.transform.SetParent(GameObject.FindWithTag("Environment_").transform);
-			coinT.transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>().enabled = true;
+			coinT.GetComponent<SpriteRenderer>().enabled = true;
 			CoinQueue.Enqueue(coinT);
 		}
 		for (int i = 1; i <= num; i++) {

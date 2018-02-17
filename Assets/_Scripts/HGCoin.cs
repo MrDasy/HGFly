@@ -11,7 +11,7 @@ public class HGCoin : MonoBehaviour {
 			GetComponent<AudioSource>().enabled = true;
 			GetComponent<AudioSource>().clip = HGAudioLoader.Load("get_coin");
 			GetComponent<AudioSource>().Play();
-			transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>().enabled = false;
+			GetComponent<SpriteRenderer>().enabled = false;
 			GameObject.FindWithTag("Character_").GetComponent<HGCharacter>().UpdateScore();
 		}
 		
