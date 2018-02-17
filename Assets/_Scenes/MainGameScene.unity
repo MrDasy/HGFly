@@ -420,7 +420,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 458cdcb6ac52f9d4c8c44fc35b464b7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  seed: 010100110
 --- !u!1 &621808783
 GameObject:
   m_ObjectHideFlags: 0
@@ -672,11 +671,6 @@ Prefab:
     - target: {fileID: 4255992958006958, guid: b81873704e101fb4481b705c09503fbe, type: 2}
       propertyPath: m_RootOrder
       value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 114324541436653258, guid: b81873704e101fb4481b705c09503fbe,
-        type: 2}
-      propertyPath: m_Enabled
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: b81873704e101fb4481b705c09503fbe, type: 2}

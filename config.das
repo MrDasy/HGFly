@@ -1,0 +1,1 @@
+{"GodMode":false,"Seed":"001100"}

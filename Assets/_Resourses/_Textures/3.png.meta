@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: e16c69cedfa6c714c995314edf54ab38
-timeCreated: 1516372171
+guid: 8ba48aea5b936a94ca5a13feeebb813e
+timeCreated: 1518486945
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName: {}
@@ -32,7 +32,7 @@ TextureImporter:
   textureSettings:
     serializedVersion: 2
     filterMode: -1
-    aniso: -1
+    aniso: 1
     mipBias: -1
     wrapU: 1
     wrapV: 1
@@ -76,16 +76,6 @@ TextureImporter:
     allowsAlphaSplitting: 0
     overridden: 0
     androidETC2FallbackOverride: 0
-  - buildTarget: iPhone
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    androidETC2FallbackOverride: 0
   spriteSheet:
     serializedVersion: 2
     sprites: []
@@ -93,5 +83,5 @@ TextureImporter:
     physicsShape: []
   spritePackingTag: 
   userData: 
-  assetBundleName: prefabs
+  assetBundleName: 
   assetBundleVariant: 

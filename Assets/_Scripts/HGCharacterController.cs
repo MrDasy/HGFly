@@ -16,14 +16,22 @@ public class HGCharacterController : MonoBehaviour {
 	[SerializeField] private float MoveSpeedInitialize;
 	[SerializeField] private float RotateSpeed;
 	[SerializeField] private HGBlockType MODEINIT = HGBlockType.Mode_Flypee;
+	private HGOpinion OP;
     //--------------------
 
     HGCharacter Charc;
 	GameObject Environ;
 	string[] ModeOp = new string[11];
 	// Use this for initialization
-
+	void LoadOpinion() {
+		OP = HGOpinionLoader.OPtemp;
+		print(OP.GodMode);
+	}
+	 void Awake() {
+		HGOpinionLoader.Init();
+	}
 	void Start() {
+		LoadOpinion();
 		Charc = this.gameObject.GetComponent<HGCharacter>();
 		Environ = GameObject.FindWithTag("Environment_");
 		Charc.transform.position = new Vector2(0f, HeightInitialize);
@@ -64,11 +72,13 @@ public class HGCharacterController : MonoBehaviour {
 		else GetComponent<AudioSource>().clip = HGAudioLoader.Load("hit");
 		GetComponent<AudioSource>().Play();
 
-		Charc.UpdateMode(HGBlockType.Mode_End);
-		StopCoroutine("AutoAddSpeed");
-		GetComponent<Rigidbody2D>().velocity = new Vector2(0f, 0f);
-		GetComponent<ConstantForce2D>().force = new Vector2(0f, DropForce);
-		UITimer.StopTiming();
+		if (!OP.GodMode) {
+			Charc.UpdateMode(HGBlockType.Mode_End);
+			StopCoroutine("AutoAddSpeed");
+			GetComponent<Rigidbody2D>().velocity = new Vector2(0f, 0f);
+			GetComponent<ConstantForce2D>().force = new Vector2(0f, DropForce);
+			UITimer.StopTiming();
+		}
 	}
 	IEnumerator AutoAddSpeed() {
 		while (true) {
@@ -105,6 +115,8 @@ public class HGCharacterController : MonoBehaviour {
 		}
 	}
 	void HGc_mode_flypee() {
+		if (OP.GodMode && GetComponent<Rigidbody2D>().velocity.x < MoveSpeedInitialize)
+			GetComponent<Rigidbody2D>().velocity = new Vector2(MoveSpeedInitialize, GetComponent<Rigidbody2D>().velocity.y);
 		if (Input.GetButtonDown("Jump")) {
 			GetComponent<AudioSource>().clip = HGAudioLoader.Load("jump");
 			GetComponent<AudioSource>().Play();
@@ -119,18 +131,7 @@ public class HGCharacterController : MonoBehaviour {
 		}
 	}
 	void HGc_mode_sky() {
-		if (Input.GetButtonDown("Jump")) {
-			GetComponent<AudioSource>().clip = HGAudioLoader.Load("jump");
-			GetComponent<AudioSource>().Play();
-			Vector2 VecTemp = new Vector2(0f, (GetComponent<Rigidbody2D>().velocity.y < JumpSpeedLimit ? JumpForce : 0f));
-			GetComponent<Rigidbody2D>().AddForce(VecTemp);
-		}
-		if (Input.GetButtonDown("Pause")) {
-			print("Paused\n");
-			Time.timeScale = 0;
-			UITimer.StopTiming();
-			Charc.UpdateMode(HGBlockType.Mode_Pause);
-		}
+		HGc_mode_flypee();
 	}
 
 	public void UpdateModeOp(HGBlockType mode) {

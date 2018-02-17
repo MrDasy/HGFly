@@ -6,7 +6,7 @@ public class HGEnvironment : MonoBehaviour {
     //数值配置----------
     public static float width = 30.0f;
 	public static float blank = 4f;
-	public string seed = "000";
+	private string seed;
 	//--------------------
 	int posX = 0;
 	int passed = 0;
@@ -14,6 +14,7 @@ public class HGEnvironment : MonoBehaviour {
 	System.Random ra = new System.Random();
 	// Use this for initialization
 	void Start () {
+		seed = HGOpinionLoader.OPtemp.Seed;
 		CharacterEntity = GameObject.Find("Character");
 		EnvironEntity = GameObject.FindWithTag("Environment_");
 		HGAudioLoader.Init();
@@ -120,7 +121,7 @@ public class HGBlock {
 			coinT.transform.GetComponent<Collider2D>().enabled = true;
 			coinT.transform.position = new Vector2(posx+HGEnvironment.width/(3*num)*i,posy+(float)ra.Next(50,150)/100*HGEnvironment.blank/2);
 			coinT.transform.SetParent(GameObject.FindWithTag("Environment_").transform);
-			coinT.transform.GetChild(0).gameObject.GetComponent<Renderer>().enabled = true;
+			coinT.transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>().enabled = true;
 			CoinQueue.Enqueue(coinT);
 		}
 		for (int i = 1; i <= num; i++) {
