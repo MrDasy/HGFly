@@ -7,8 +7,9 @@ using UnityEngine.UI;
 //控制人物移动
 public class HGCharacterController : MonoBehaviour {
 	//数值配置----------
-	[SerializeField] private float JumpSpeedLimit;
-	[SerializeField] private float JumpForce;
+	//[SerializeField] private float JumpSpeedLimit;
+	//[SerializeField] private float JumpForce;
+	[SerializeField] private float JumpSpeed;
 	[SerializeField] private float Gravity;
 	[SerializeField] private float DropForce;
 	[SerializeField] private float HeightInitialize;
@@ -34,7 +35,9 @@ public class HGCharacterController : MonoBehaviour {
 	}
 	void Start() {
 		LoadOpinion();
+		Test_Init();
 		GuideUI.SetActive(false);
+		Test_SetTexture(2);
 		Charc = this.gameObject.GetComponent<HGCharacter>();
 		Environ = GameObject.FindWithTag("Environment_");
 		Charc.transform.position = new Vector2(0f, HeightInitialize);
@@ -44,6 +47,7 @@ public class HGCharacterController : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
+
 		if (Input.GetButtonDown("Cancel")) {
 			HGm_back();
 			return;
@@ -75,13 +79,28 @@ public class HGCharacterController : MonoBehaviour {
 		else GetComponent<AudioSource>().clip = HGAudioLoader.Load("hit");
 		GetComponent<AudioSource>().Play();
 
-		if (!OP.GodMode) {
-			Charc.UpdateMode(HGBlockType.Mode_End);
-			StopCoroutine("AutoAddSpeed");
-			GetComponent<Rigidbody2D>().velocity = new Vector2(0f, 0f);
-			GetComponent<ConstantForce2D>().force = new Vector2(0f, DropForce);
-			UITimer.StopTiming();
+		if (OP.GodMode) return;
+		switch (Charc.GetMode()) {
+			case HGBlockType.Mode_Flypee:
+			case HGBlockType.Mode_SkyBattle:
+				HGcol_mode1();
+				break;
+			case HGBlockType.Mode_Runner:
+				HGcol_mode2();
+				break;
+			default:
+				break;
 		}
+	}
+	void HGcol_mode1() {
+		Charc.UpdateMode(HGBlockType.Mode_End);
+		StopCoroutine("AutoAddSpeed");
+		GetComponent<Rigidbody2D>().velocity = new Vector2(0f, 0f);
+		GetComponent<ConstantForce2D>().force = new Vector2(0f, DropForce);
+		UITimer.StopTiming();
+	}
+	void HGcol_mode2() {
+
 	}
 	IEnumerator AutoAddSpeed() {
 		while (true) {
@@ -121,11 +140,15 @@ public class HGCharacterController : MonoBehaviour {
 	void HGc_mode_flypee() {
 		if (OP.GodMode && GetComponent<Rigidbody2D>().velocity.x < MoveSpeedInitialize)
 			GetComponent<Rigidbody2D>().velocity = new Vector2(MoveSpeedInitialize, GetComponent<Rigidbody2D>().velocity.y);
+		if (TextureOrd == 1) jumptime -= Time.deltaTime;
+		Test_SetTexture((GetComponent<Rigidbody2D>().velocity.y > 0 ? 3 : 2));
 		if (Input.GetButtonDown("Jump")) {
+			Test_SetTexture(1);
 			GetComponent<AudioSource>().clip = HGAudioLoader.Load("jump");
 			GetComponent<AudioSource>().Play();
-			Vector2 VecTemp = new Vector2(0f, (GetComponent<Rigidbody2D>().velocity.y < JumpSpeedLimit ? JumpForce : 0f));
-			GetComponent<Rigidbody2D>().AddForce(VecTemp);
+			//Vector2 VecTemp = new Vector2(0f, (GetComponent<Rigidbody2D>().velocity.y < JumpSpeedLimit ? JumpForce : 0f));
+			//GetComponent<Rigidbody2D>().AddForce(VecTemp);
+			GetComponent<Rigidbody2D>().velocity += new Vector2(0f, JumpSpeed > GetComponent<Rigidbody2D>().velocity.y ? JumpSpeed - GetComponent<Rigidbody2D>().velocity.y : JumpSpeed / 2);
 		}
 		if (Input.GetButtonDown("Pause")) {
 			print("Paused\n");
@@ -149,5 +172,24 @@ public class HGCharacterController : MonoBehaviour {
 	}
 	void HGi_Sky() {
 
+	}
+
+	public float jumpstay;
+	public int TextureOrd;
+	public float jumptime;
+
+	void Test_Init() {
+		jumpstay = 0.08f;
+		TextureOrd = 0;
+		jumptime = -1f;
+}
+	void Test_SetTexture(int ord) {
+		if (TextureOrd == ord) return;
+		if (ord != 1 && jumptime > 0) return;
+		if (ord == 1) jumptime = jumpstay;
+		TextureOrd = ord;
+		for (int i = 1; i <= 3; i++) {
+			transform.Find(string.Format("Action{0}", i)).gameObject.SetActive(ord == i);
+		}
 	}
 }
