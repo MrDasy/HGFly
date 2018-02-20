@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 3557858637
+CRC: 3832838369
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: dffbf45695d044645ee51b742995bf40
+    Hash: 6b7598b4ad47be8b0be0255fcb4b0848
   TypeTreeHash:
     serializedVersion: 2
     Hash: f973b9b0cb3c5a7e99c62a839ceaa242
@@ -51,12 +51,13 @@ Assets:
 - Assets/_Resourses/_PhysicMat/Ball.physicsMaterial2D
 - Assets/_Resourses/_Textures/Background1.psd
 - Assets/_Resourses/_Textures/character.psd
+- Assets/_Resourses/_Prefabs/Book_.prefab
 - Assets/_Resourses/_Prefabs/Flypee_Prefab.prefab
+- Assets/_Resourses/_Prefabs/Runner_prefab.prefab
 - Assets/_Resourses/_Textures/coin.psd
 - Assets/_Resourses/_Prefabs/SkyBattle_Prefab.prefab
 - Assets/_Resourses/_Prefabs/Coins_.prefab
 - Assets/_Resourses/_Textures/football.psd
-- Assets/_Resourses/_Textures/fly.psd
 - Assets/_Resourses/_PhysicMat/Ob.physicsMaterial2D
 - Assets/_Resourses/_Textures/niao.png
 - Assets/_Resourses/_Textures/HGEEK.png

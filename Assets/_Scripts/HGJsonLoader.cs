@@ -44,4 +44,5 @@ public class HGJsonLoader {
 public class HGOpinion {
 	public bool GodMode { set; get; }
 	public string Seed { set; get; }
+	public int BgmID { set; get; }
 }

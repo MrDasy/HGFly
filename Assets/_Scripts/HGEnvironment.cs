@@ -5,7 +5,7 @@ using UnityEngine;
 public class HGEnvironment : MonoBehaviour {
     //数值配置----------
     public static float width = 30.0f;
-	public static float blank = 4f;
+	public static float blank = 4.5f;
 	private string seed;
 	//--------------------
 	int posX = 0;
@@ -59,6 +59,11 @@ public class HGEnvironment : MonoBehaviour {
 						HGBlock.CoinSetup(objTemp.transform.position.x + 10 * i, 5, 3);
 					}
 				}
+				else if (modeid == 2) {
+					for (int i = -1; i <= 1; i++) {
+						HGBlock.CoinSetup(objTemp.transform.position.x + 10 * i, 5, 3);
+					}
+				}
 			}
 			posX++;
 		}
@@ -82,6 +87,10 @@ public class HGEnvironment : MonoBehaviour {
 				for (int i = -1; i <= 1; i++) {
 					HGBlock.CoinSetup(objTemp.transform.position.x + 10 * i, 5, 3);
 				}
+			} else if (modeid == 2) {
+				for (int i = -1; i <= 1; i++) {
+					HGBlock.CoinSetup(objTemp.transform.position.x + 10 * i, 5, 3);
+				}
 			}
 		}
 		posX++;
@@ -101,13 +110,15 @@ public class HGBlock {
             return HGAssetBundleLoader.GetIns().GetBundle("prefabs").LoadAsset("Start_Prefab.prefab");
         } else if (Type == HGBlockType.Mode_SkyBattle) {
 			return HGAssetBundleLoader.GetIns().GetBundle("prefabs").LoadAsset("SkyBattle_Prefab.prefab");
+		} else if (Type == HGBlockType.Mode_Runner) {
+			return HGAssetBundleLoader.GetIns().GetBundle("prefabs").LoadAsset("Runner_prefab.prefab");
 		}
-            return null;
+		return null;
     }
 	public static void FlypeeSetup(ref GameObject target,float blank){
 		float t;
 		for (int i = 1; i <= 3; i++) {
-			t = (float)ra.Next(20, 200) / 100f * 3f;
+			t = (float)ra.Next(10, 180) / 100f * 3f;
 			target.transform.Find(System.String.Format("Ob{0}", i)).GetComponent<Transform>().localScale = new Vector2(1f, t);
 			target.transform.Find(System.String.Format("Ob{0} (1)", i)).GetComponent<Transform>().localScale = new Vector2(1f, 10f - t - blank);
 			CoinSetup(target.transform.Find(System.String.Format("Ob{0}", i)).transform.position.x,t,3);
