@@ -7,24 +7,25 @@ public class HGEnvironment : MonoBehaviour {
     public static float width = 30.0f;
 	public static float blank = 4.5f;
 	private string seed;
+	private int posX = 0;
+	private int passed = 0;
+	private GameObject CharacterEntity, EnvironEntity;
+	private System.Random ra;
 	//--------------------
-	int posX = 0;
-	int passed = 0;
-	GameObject CharacterEntity,EnvironEntity;
-	System.Random ra = new System.Random();
+
 	// Use this for initialization
+	void Awake() {
+		ra = new System.Random();
+		HGAssetBundleLoader.GetIns().GetBundle("prefabs");
+		HGAudioLoader.Init();
+	}
 	void Start () {
 		seed = HGOpinionLoader.OPtemp.Seed;
 		CharacterEntity = GameObject.Find("Character");
 		EnvironEntity = GameObject.FindWithTag("Environment_");
-		HGAudioLoader.Init();
 		Invoke("Environ_Init", 0f);
 	}
 
-	// Update is called once per frame
-	void Update () {
-		
-	}
     public void Environ_Init() {
 		posX = 0;
 		passed = 0;
@@ -68,6 +69,7 @@ public class HGEnvironment : MonoBehaviour {
 			posX++;
 		}
     }
+
     public void Environ_Update() {
 		passed++;
 		if (passed <= 1) return;

@@ -10,7 +10,7 @@ public class HGCharacter : MonoBehaviour {
 	//--------------------
 	//人物状态----------
 	private int Score=0;
-	private HGBlockType GameMode=HGBlockType.Mode_Pause;
+	private HGBlockType GameMode=HGBlockType.Mode_Start;
      //-------------------
 	public void Start() {
 		UITimer.InitTiming(); 
@@ -33,4 +33,14 @@ public class HGCharacter : MonoBehaviour {
 		Score = 0;
 		ScoreUI.text = string.Format("分数: {0}", Score);
 	}
+
+	public int GetScore() {
+		return Score;
+	}
+}
+
+public class CharacterStat {
+	public int TimeMin { set; get; }
+	public int TimeSec { set; get; }
+	public int Score { set; get; }
 }

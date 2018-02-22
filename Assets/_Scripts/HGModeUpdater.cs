@@ -4,13 +4,12 @@ using UnityEngine;
 
 public class HGModeUpdater : MonoBehaviour {
 	public HGBlockType Mode;
-	private bool aval = true;
-	// Use this for initialization
+	private bool able = true;
 
     void OnTriggerEnter2D(Collider2D collider) {
-		if (collider.gameObject.name.Equals("Character")&&aval) {
+		if (collider.gameObject.name.Equals("Character")&& able) {
 			print("mode updated\n");
-			aval = false;
+			able = false;
 			collider.GetComponent<HGCharacter>().UpdateMode(Mode);
 			GameObject.FindWithTag("Environment_").GetComponent<HGEnvironment>().Environ_Update();
 		}
@@ -20,6 +19,6 @@ public class HGModeUpdater : MonoBehaviour {
     }
 
 	public void SetAval(bool cond) {
-		aval = cond;
+		able = cond;
 	}
 }

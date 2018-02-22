@@ -185,7 +185,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 31, y: 0.5}
+  m_Size: {x: 30, y: 0.5}
   m_EdgeRadius: 0
 --- !u!61 &61676057220582640
 BoxCollider2D:
@@ -210,7 +210,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 31, y: 0.5}
+  m_Size: {x: 30, y: 0.5}
   m_EdgeRadius: 0
 --- !u!61 &61858120085406972
 BoxCollider2D:

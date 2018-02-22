@@ -7,7 +7,7 @@ public class HGOpinionLoader : MonoBehaviour {
 	public static HGOpinion OPtemp;
 	public GameObject Seedt;
 	public GameObject bgmid;
-	// Use this for initialization
+
 	public static void Init() {
 		OPtemp = HGJsonLoader.BasicRead<HGOpinion>("config.das");
 		HGJsonLoader.Unload();

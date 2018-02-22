@@ -17,39 +17,53 @@ public class HGCharacterController : MonoBehaviour {
 	[SerializeField] private float MoveSpeedUpInterval;
 	[SerializeField] private float MoveSpeedInitialize;
 	[SerializeField] private float RotateSpeed;
-	[SerializeField] private HGBlockType MODEINIT = HGBlockType.Mode_Flypee;
-	private HGOpinion OP;
-	public GameObject GuideUI;
-    //--------------------
 
-    HGCharacter Charc;
-	GameObject Environ;
-	bool landing = false;
-	string[] ModeOp = new string[11];
-	// Use this for initialization
-	 void Awake() {
-		HGOpinionLoader.Init();
-	}
-	void Start() {
-		OP = HGOpinionLoader.OPtemp;
-		Test_Init();
-		GuideUI.SetActive(false);
-		Test_SetTexture(2);
-		Charc = this.gameObject.GetComponent<HGCharacter>();
-		Environ = GameObject.FindWithTag("Environment_");
-		Charc.transform.position = new Vector2(0f, HeightInitialize);
+	public GameObject PauseUI;
+	public Text SpeedUI;
+
+	private HGOpinion OP;
+	private HGCharacter Character;
+	private GameObject Environment;
+	private bool landing = false;
+	private string[] ModeOp = new string[11];
+	private HGBlockType ModeTemp;
+	private bool started = false;
+
+
+	private float jumpstay;
+	private int TextureOrd;
+	private float jumptime;
+	//--------------------
+
+	void ModeOpInit() {
 		ModeOp[0] = "HGi_flypee";
 		ModeOp[1] = "HGi_Sky";
 		ModeOp[2] = "HGi_Runner";
 	}
+	
+	void Awake() {
+		HGOpinionLoader.Init();
+		ModeOpInit();
+		Test_Init();
+	}
 
-	// Update is called once per frame
+	void Start() {
+		Time.timeScale = 1;
+		OP = HGOpinionLoader.OPtemp;
+		UIInit();
+		Test_SetTexture(2);
+		Character = this.gameObject.GetComponent<HGCharacter>();
+		Environment = GameObject.FindWithTag("Environment_");
+		Character.transform.position = new Vector2(0f, HeightInitialize);
+	}
+
 	void Update () {
+		SpeedUI.text = string.Format("速度：{0}", GetComponent<Rigidbody2D>().velocity.x);
 		if (Input.GetButtonDown("Cancel")) {
 			HGm_back();
 			return;
 		}
-        switch (Charc.GetMode()) {
+        switch (Character.GetMode()) {
             case HGBlockType.Mode_Pause:
 				HGc_mode_pause();
                 break;
@@ -57,7 +71,7 @@ public class HGCharacterController : MonoBehaviour {
 				HGc_mode_flypee();
                 break;
             case HGBlockType.Mode_Start:
-                Charc.UpdateMode(Charc.GetMode());
+				HGc_mode_Start();
                 break;
             case HGBlockType.Mode_End:
 				HGc_mode_end();
@@ -80,7 +94,7 @@ public class HGCharacterController : MonoBehaviour {
 		else PlayAudio("hit");
 
 		if (OP.GodMode) return;
-		switch (Charc.GetMode()) {
+		switch (Character.GetMode()) {
 			case HGBlockType.Mode_Flypee:
 			case HGBlockType.Mode_SkyBattle:
 				HGcol_mode1();
@@ -93,11 +107,15 @@ public class HGCharacterController : MonoBehaviour {
 		}
 	}
 	void HGcol_mode1() {
-		Charc.UpdateMode(HGBlockType.Mode_End);
+		Character.UpdateMode(HGBlockType.Mode_End);
 		StopCoroutine("AutoAddSpeed");
 		GetComponent<Rigidbody2D>().velocity = new Vector2(0f, 0f);
 		GetComponent<ConstantForce2D>().force = new Vector2(0f, DropForce);
+		CharacterStat statt = UITimer.GetStat();
+		HGJsonLoader.BasicWrite<CharacterStat>(statt, ".temp");
+		HGJsonLoader.Unload();
 		UITimer.StopTiming();
+		SceneManager.LoadSceneAsync(4, LoadSceneMode.Additive);
 	}
 	void HGcol_mode2() {
 		StopCoroutine("PlayStep");
@@ -107,7 +125,7 @@ public class HGCharacterController : MonoBehaviour {
 
 	void OnCollisionStay2D() {
 		landing = true;
-		switch (Charc.GetMode()) {
+		switch (Character.GetMode()) {
 			case HGBlockType.Mode_Flypee:
 			case HGBlockType.Mode_SkyBattle:
 				break;
@@ -126,7 +144,7 @@ public class HGCharacterController : MonoBehaviour {
 	}
 	void OnCollisionExit2D() {
 		landing = false;
-		switch (Charc.GetMode()) {
+		switch (Character.GetMode()) {
 			case HGBlockType.Mode_Flypee:
 			case HGBlockType.Mode_SkyBattle:
 				break;
@@ -145,9 +163,10 @@ public class HGCharacterController : MonoBehaviour {
 		}
 	}
 	void HGm_back() {
-		HGBlock.Clear();
-		HGObjectPool.GetIns().Clear();
-		SceneManager.LoadScene(0);
+		//HGBlock.Clear();
+		//HGObjectPool.GetIns().Clear();
+		//HGPreloader.Load(0);
+		GamePause();
 	}
 	void HGc_mode_end() {
 		if (Input.GetButtonDown("Restart")) {
@@ -157,19 +176,17 @@ public class HGCharacterController : MonoBehaviour {
 			GetComponent<ConstantForce2D>().force = new Vector2(0f, 0f);
 			GetComponent<Rigidbody2D>().velocity = new Vector2(0f, 0f);
 			GetComponent<Rigidbody2D>().angularVelocity = 0f;
-			Environ.GetComponent<HGEnvironment>().Environ_Init();
+			Environment.GetComponent<HGEnvironment>().Environ_Init();
 			UITimer.ResetTiming();
-			Charc.UpdateMode(HGBlockType.Mode_Pause);
+			SceneManager.UnloadSceneAsync(4);
+			started = false;
+			Character.UpdateMode(HGBlockType.Mode_Start);
 		}
 	}
 	void HGc_mode_pause() {
 		if (Input.GetButtonDown("Jump")) {
-			GuideUI.SetActive(false);
-			Time.timeScale = 1;
-			print("Started\n");
-			StartCoroutine("AutoAddSpeed");
-			Charc.UpdateMode(MODEINIT);
-			UITimer.StartTiming();
+//			SceneManager.UnloadSceneAsync(4);
+			GameContinue();
 		}
 	}
 	void HGc_mode_flypee() {
@@ -180,16 +197,10 @@ public class HGCharacterController : MonoBehaviour {
 		if (Input.GetButtonDown("Jump")) {
 			Test_SetTexture(1);
 			PlayAudio("jump");
-			//Vector2 VecTemp = new Vector2(0f, (GetComponent<Rigidbody2D>().velocity.y < JumpSpeedLimit ? JumpForce : 0f));
-			//GetComponent<Rigidbody2D>().AddForce(VecTemp);
 			GetComponent<Rigidbody2D>().velocity += new Vector2(0f, JumpSpeed > GetComponent<Rigidbody2D>().velocity.y ? JumpSpeed - GetComponent<Rigidbody2D>().velocity.y : JumpSpeed / 2);
 		}
 		if (Input.GetButtonDown("Pause")) {
-			print("Paused\n");
-			Time.timeScale = 0;
-			GuideUI.SetActive(true);
-			UITimer.StopTiming();
-			Charc.UpdateMode(HGBlockType.Mode_Pause);
+			GamePause();
 		}
 	}
 	void HGc_mode_sky() {
@@ -208,6 +219,28 @@ public class HGCharacterController : MonoBehaviour {
 			else transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
 			GetComponent<ConstantForce2D>().force = -GetComponent<ConstantForce2D>().force;
 		}
+		if (Input.GetButtonDown("Pause")) {
+			GamePause();
+		}
+	}
+
+	void HGc_mode_Start() {
+		if (started) return;
+		started = true;
+		Test_SetTexture(3);
+		GetComponent<Rigidbody2D>().velocity = new Vector2(0f , 1f);
+		StartCoroutine(StartSpeedUp(5f));	
+	}
+
+	IEnumerator StartSpeedUp(float time) {
+		for(float timer = time; timer > 0; timer -= 0.1f) {
+			GetComponent<Rigidbody2D>().velocity += new Vector2(MoveSpeedInitialize / (time*10f)+0.01f,0f);
+			yield return null;
+		}
+		Character.UpdateMode(HGBlockType.Mode_Flypee);
+		UITimer.StartTiming();
+		StartCoroutine("AutoAddSpeed");
+		yield return null;
 	}
 
 	public void UpdateModeOp(HGBlockType mode) {
@@ -215,6 +248,8 @@ public class HGCharacterController : MonoBehaviour {
 		if ((int)mode<8) Invoke(ModeOp[(int)mode], 0f);
 	}
 	void HGi_flypee() {
+		GetComponent<Rigidbody2D>().angularVelocity = 0f;
+		transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
 		if (GetComponent<BoxCollider2D>().enabled) {
 			GetComponent<BoxCollider2D>().enabled = false;
 		}
@@ -225,6 +260,8 @@ public class HGCharacterController : MonoBehaviour {
 		HGi_flypee();
 	}
 	void HGi_Runner() {
+		GetComponent<Rigidbody2D>().angularVelocity = 0f;
+		transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
 		Test_SetTexture(4);
 		if (!GetComponent<BoxCollider2D>().enabled) {
 			GetComponent<BoxCollider2D>().enabled = true;
@@ -238,9 +275,26 @@ public class HGCharacterController : MonoBehaviour {
 		GetComponent<AudioSource>().Play();
 	}
 
-	public float jumpstay;
-	public int TextureOrd;
-	public float jumptime;
+	public void GamePause() {
+		PauseUI.SetActive(true);
+		print("Paused\n");
+		Time.timeScale = 0;
+		//UITimer.StopTiming();
+		ModeTemp = Character.GetMode();
+		Character.UpdateMode(HGBlockType.Mode_Pause);
+	}
+
+	public void GameContinue() {
+		PauseUI.SetActive(false);
+		Time.timeScale = 1;
+		print("Started\n");
+		Character.UpdateMode(ModeTemp);
+		//UITimer.StartTiming();
+	}
+
+	void UIInit() {
+		PauseUI.SetActive(false);
+	}
 
 	void Test_Init() {
 		jumpstay = 0.08f;

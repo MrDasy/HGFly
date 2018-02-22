@@ -10,23 +10,23 @@ public class UIBehave : MonoBehaviour {
 
 	public void MainStart() {
 		print("Game Start\n");
-		SceneManager.LoadScene(3);
+		HGPreloader.Load(1);
 	}
 	public void MainExit() {
 		print("Game Quit\n");
 		Application.Quit();
 	}
-	public void MainOpinion() {
+	public void OpinionOpen() {
 		print("Game Opinion\n");
-		SceneManager.LoadScene(2);
+		SceneManager.LoadScene(2,LoadSceneMode.Additive);
 	}
 	public void GamingBack() {
 		HGBlock.Clear();
 		HGObjectPool.GetIns().Clear();
-		SceneManager.LoadScene(0);
+		HGPreloader.Load(0);
 	}
 	public void OpinionBack() {
-		SceneManager.LoadScene(0);
+		SceneManager.UnloadSceneAsync(2);
 	}
 	public void OpinionToggle(Toggle change) {
 		HGOpinion op = HGOpinionLoader.OPtemp;
@@ -63,5 +63,13 @@ public class UIBehave : MonoBehaviour {
 		op.BgmID = Convert.ToInt32(inf.transform.Find("Text").GetComponent<Text>().text);
 		HGJsonLoader.BasicWrite<HGOpinion>(op, "config.das");
 		HGJsonLoader.Unload();
+	}
+
+	public void GamingPause(GameObject charc) {
+		charc.GetComponent<HGCharacterController>().GamePause();
+	}
+
+	public void GamingContinue(GameObject charc) {
+		charc.GetComponent<HGCharacterController>().GameContinue();
 	}
 }

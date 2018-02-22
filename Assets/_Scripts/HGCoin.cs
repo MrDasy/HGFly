@@ -14,6 +14,5 @@ public class HGCoin : MonoBehaviour {
 			GetComponent<SpriteRenderer>().enabled = false;
 			GameObject.FindWithTag("Character_").GetComponent<HGCharacter>().UpdateScore();
 		}
-		
 	}
 }

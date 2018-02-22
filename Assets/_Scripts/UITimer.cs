@@ -19,14 +19,21 @@ public class UITimer : MonoBehaviour {
 	public static void StopTiming() {
 		self.Tstop();
 	}
+	public static CharacterStat GetStat() {
+		CharacterStat statt = new CharacterStat();
+		statt.TimeMin = self.min;
+		statt.TimeSec = self.sec;
+		statt.Score = GameObject.FindGameObjectWithTag("Character_").GetComponent<HGCharacter>().GetScore();
+		return statt;
+	}
 	public static void ResetTiming() {
 		self.min = 0; self.sec = 0;
-		self.Textui.text = string.Format("时间: {0:00} : {0:00}", self.min, self.sec);
+		self.Textui.text = string.Format("时间: {0:D2} : {1:D2}", self.min, self.sec);
 	}
 	public static void InitTiming() {
 		self = GameObject.FindGameObjectWithTag("Timer_").GetComponent<UITimer>();
 		self.min = 0; self.sec = 0;
-		self.Textui.text = string.Format("时间: {0:00} : {0:00}", self.min, self.sec);
+		self.Textui.text = string.Format("时间: {0:D2} : {1:D2}", self.min, self.sec);
 	}
 	IEnumerator AutoTiming() {
 		while (true) {

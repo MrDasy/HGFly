@@ -1,1 +1,1 @@
-{"GodMode":false,"Seed":"01221","BgmID":5}
+{"GodMode":true,"Seed":"0122","BgmID":9}

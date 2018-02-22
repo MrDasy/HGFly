@@ -301,7 +301,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u6D4B\u8BD5\u7248\u672C 0219d\n2018.02.20"
+  m_Text: "\u6D4B\u8BD5\u7248\u672C 0222b\n2018.02.22"
 --- !u!222 &261075781
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1262,7 +1262,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1962380505}
-        m_MethodName: MainOpinion
+        m_MethodName: OpinionOpen
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
