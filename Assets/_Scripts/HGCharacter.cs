@@ -7,10 +7,12 @@ using UnityEngine.UI;
 public class HGCharacter : MonoBehaviour {
 	//数值配置----------
 	[SerializeField] private Text ScoreUI;
+	[SerializeField] private int HPInit;
 	//--------------------
 	//人物状态----------
 	private int Score=0;
 	private HGBlockType GameMode=HGBlockType.Mode_Start;
+	private int HitPoint;
      //-------------------
 	public void Start() {
 		UITimer.InitTiming(); 
@@ -36,6 +38,19 @@ public class HGCharacter : MonoBehaviour {
 
 	public int GetScore() {
 		return Score;
+	}
+
+	public void ResetHP() {
+		HitPoint = HPInit;
+	}
+
+	public bool Damage(int hit) {
+		HitPoint -= hit;
+		return HitPoint > 0;
+	}
+
+	public int GetHP() {
+		return HitPoint;
 	}
 }
 

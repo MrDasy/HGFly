@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 3948030940
+CRC: 3779636605
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 32961aad556c79462ec7aab61bdd7c41
+    Hash: da314ceeecee0fe6a350424fdad9aff4
   TypeTreeHash:
     serializedVersion: 2
     Hash: 3f7d0c5e0986ec71841622bcb2f9be1c
@@ -16,6 +16,7 @@ Assets:
 - Assets/_Resourses/_BGM/bgm (9).ogg
 - Assets/_Resourses/_BGM/bgm (1).ogg
 - Assets/_Resourses/_BGM/bgm (14).ogg
+- Assets/_Resourses/_Audios/hurt.wav
 - Assets/_Resourses/_BGM/bgm (4).ogg
 - Assets/_Resourses/_BGM/bgm (6).ogg
 - Assets/_Resourses/_BGM/bgm (10).ogg

@@ -7,8 +7,6 @@ using UnityEngine.UI;
 //控制人物移动
 public class HGCharacterController : MonoBehaviour {
 	//数值配置----------
-	[SerializeField] private float JumpSpeedLimit;
-	[SerializeField] private float JumpForce;
 	[SerializeField] private float JumpSpeed;
 	[SerializeField] private float Gravity;
 	[SerializeField] private float DropForce;
@@ -17,22 +15,22 @@ public class HGCharacterController : MonoBehaviour {
 	[SerializeField] private float MoveSpeedUpInterval;
 	[SerializeField] private float MoveSpeedInitialize;
 	[SerializeField] private float RotateSpeed;
+	[SerializeField] private int HitDamage;
 
 	public GameObject PauseUI;
 	public Text SpeedUI;
+	public Text HPUI;
 
 	private HGOpinion OP;
 	private HGCharacter Character;
+	private HGAnimator Animator;
 	private GameObject Environment;
 	private bool landing = false;
 	private string[] ModeOp = new string[11];
 	private HGBlockType ModeTemp;
 	private bool started = false;
+	private bool god=false;
 
-
-	private float jumpstay;
-	private int TextureOrd;
-	private float jumptime;
 	//--------------------
 
 	void ModeOpInit() {
@@ -44,21 +42,24 @@ public class HGCharacterController : MonoBehaviour {
 	void Awake() {
 		HGOpinionLoader.Init();
 		ModeOpInit();
-		Test_Init();
 	}
 
 	void Start() {
 		Time.timeScale = 1;
 		OP = HGOpinionLoader.OPtemp;
 		UIInit();
-		Test_SetTexture(2);
 		Character = this.gameObject.GetComponent<HGCharacter>();
+		Animator = GetComponent<HGAnimator>();
 		Environment = GameObject.FindWithTag("Environment_");
 		Character.transform.position = new Vector2(0f, HeightInitialize);
 	}
 
-	void Update () {
+	void StatUIUpdate() {
 		SpeedUI.text = string.Format("速度：{0}", GetComponent<Rigidbody2D>().velocity.x);
+		HPUI.text = string.Format("血量：{0}", Character.GetHP());
+	}//test
+	void Update () {
+		StatUIUpdate();
 		if (Input.GetButtonDown("Cancel")) {
 			HGm_back();
 			return;
@@ -107,6 +108,15 @@ public class HGCharacterController : MonoBehaviour {
 		}
 	}
 	void HGcol_mode1() {
+		if (god) return;
+		if (Character.Damage(HitDamage)) {
+			god = true;
+			print("godded");
+			PlayAudio("hurt");
+			transform.Find("God").gameObject.SetActive(true);
+			Invoke("OnDamaged", 3f);
+			return;
+		}
 		Character.UpdateMode(HGBlockType.Mode_End);
 		StopCoroutine("AutoAddSpeed");
 		GetComponent<Rigidbody2D>().velocity = new Vector2(0f, 0f);
@@ -116,6 +126,12 @@ public class HGCharacterController : MonoBehaviour {
 		HGJsonLoader.Unload();
 		UITimer.StopTiming();
 		SceneManager.LoadSceneAsync(4, LoadSceneMode.Additive);
+	}
+	void OnDamaged() {
+		GetComponent<Rigidbody2D>().angularVelocity = 0f;
+		transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
+		transform.Find("God").gameObject.SetActive(false);
+		god = false;
 	}
 	void HGcol_mode2() {
 		StopCoroutine("PlayStep");
@@ -192,10 +208,13 @@ public class HGCharacterController : MonoBehaviour {
 	void HGc_mode_flypee() {
 		if (OP.GodMode && GetComponent<Rigidbody2D>().velocity.x < MoveSpeedInitialize)
 			GetComponent<Rigidbody2D>().velocity = new Vector2(MoveSpeedInitialize, GetComponent<Rigidbody2D>().velocity.y);
-		if (TextureOrd == 1) jumptime -= Time.deltaTime;
-		Test_SetTexture((GetComponent<Rigidbody2D>().velocity.y > 0 ? 3 : 2));
+
+		if (GetComponent<Rigidbody2D>().velocity.y > 0)
+			Animator.HGanim_rise();
+		else
+			Animator.HGanim_fall();
 		if (Input.GetButtonDown("Jump")) {
-			Test_SetTexture(1);
+			Animator.HGanim_jump();
 			PlayAudio("jump");
 			GetComponent<Rigidbody2D>().velocity += new Vector2(0f, JumpSpeed > GetComponent<Rigidbody2D>().velocity.y ? JumpSpeed - GetComponent<Rigidbody2D>().velocity.y : JumpSpeed / 2);
 		}
@@ -226,15 +245,16 @@ public class HGCharacterController : MonoBehaviour {
 
 	void HGc_mode_Start() {
 		if (started) return;
+		Character.ResetHP();
 		started = true;
-		Test_SetTexture(3);
+		Animator.HGanim_start();
 		GetComponent<Rigidbody2D>().velocity = new Vector2(0f , 1f);
-		StartCoroutine(StartSpeedUp(5f));	
+		StartCoroutine(StartSpeedUp(6.5f));	
 	}
 
 	IEnumerator StartSpeedUp(float time) {
 		for(float timer = time; timer > 0; timer -= 0.1f) {
-			GetComponent<Rigidbody2D>().velocity += new Vector2(MoveSpeedInitialize / (time*10f)+0.01f,0f);
+			GetComponent<Rigidbody2D>().velocity += new Vector2(MoveSpeedInitialize / (time*10f)+0.001f,0f);
 			yield return null;
 		}
 		Character.UpdateMode(HGBlockType.Mode_Flypee);
@@ -262,7 +282,7 @@ public class HGCharacterController : MonoBehaviour {
 	void HGi_Runner() {
 		GetComponent<Rigidbody2D>().angularVelocity = 0f;
 		transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
-		Test_SetTexture(4);
+		Animator.HGanim_run();
 		if (!GetComponent<BoxCollider2D>().enabled) {
 			GetComponent<BoxCollider2D>().enabled = true;
 		}
@@ -293,21 +313,9 @@ public class HGCharacterController : MonoBehaviour {
 	}
 
 	void UIInit() {
+		transform.Find("God").gameObject.SetActive(false);
 		PauseUI.SetActive(false);
 	}
 
-	void Test_Init() {
-		jumpstay = 0.08f;
-		TextureOrd = 0;
-		jumptime = -1f;
-}
-	void Test_SetTexture(int ord) {
-		if (TextureOrd == ord) return;
-		if (ord != 1 && jumptime > 0) return;
-		if (ord == 1) jumptime = jumpstay;
-		TextureOrd = ord;
-		for (int i = 1; i <= 4; i++) {
-			transform.Find(string.Format("Action{0}", i)).gameObject.SetActive(ord == i);
-		}
-	}
+	
 }

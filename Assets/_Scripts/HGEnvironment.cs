@@ -158,6 +158,7 @@ public enum HGBlockType {
 	Mode_SkyBattle=1,
 	Mode_Runner=2,
 	//状态
+	Mode_God=7,
 	Mode_Start=8,
 	Mode_Pause=9,
 	Mode_End=10
