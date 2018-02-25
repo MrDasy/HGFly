@@ -15,16 +15,18 @@ public class HGCharacterController : MonoBehaviour {
 	[SerializeField] private float MoveSpeedUpInterval;
 	[SerializeField] private float MoveSpeedInitialize;
 	[SerializeField] private float RotateSpeed;
-	[SerializeField] private int HitDamage;
+	[SerializeField] private int HurtDamage;
 
 	public GameObject PauseUI;
 	public Text SpeedUI;
 	public Text HPUI;
 
+	private int HitDamage;
 	private HGOpinion OP;
 	private HGCharacter Character;
 	private HGAnimator Animator;
 	private GameObject Environment;
+	private HGBGMLoader BGMLoader;
 	private bool landing = false;
 	private string[] ModeOp = new string[11];
 	private HGBlockType ModeTemp;
@@ -51,7 +53,10 @@ public class HGCharacterController : MonoBehaviour {
 		Character = this.gameObject.GetComponent<HGCharacter>();
 		Animator = GetComponent<HGAnimator>();
 		Environment = GameObject.FindWithTag("Environment_");
+		BGMLoader= GameObject.FindWithTag("MainCamera").GetComponent<HGBGMLoader>();
 		Character.transform.position = new Vector2(0f, HeightInitialize);
+		if (!OP.GodMode) HitDamage = HurtDamage;
+		else HitDamage = 0;
 	}
 
 	void StatUIUpdate() {
@@ -94,7 +99,6 @@ public class HGCharacterController : MonoBehaviour {
 			PlayAudio("fall");
 		else PlayAudio("hit");
 
-		if (OP.GodMode) return;
 		switch (Character.GetMode()) {
 			case HGBlockType.Mode_Flypee:
 			case HGBlockType.Mode_SkyBattle:
@@ -114,6 +118,9 @@ public class HGCharacterController : MonoBehaviour {
 			print("godded");
 			PlayAudio("hurt");
 			transform.Find("God").gameObject.SetActive(true);
+			GetComponent<Rigidbody2D>().angularVelocity = 0f;
+			if (GetComponent<Rigidbody2D>().velocity.x < MoveSpeedInitialize/2)
+				GetComponent<Rigidbody2D>().velocity += new Vector2(MoveSpeedInitialize/2 - GetComponent<Rigidbody2D>().velocity.x, 0f);
 			Invoke("OnDamaged", 3f);
 			return;
 		}
@@ -126,11 +133,14 @@ public class HGCharacterController : MonoBehaviour {
 		HGJsonLoader.Unload();
 		UITimer.StopTiming();
 		SceneManager.LoadSceneAsync(4, LoadSceneMode.Additive);
+		BGMLoader.StopBGM();
 	}
 	void OnDamaged() {
 		GetComponent<Rigidbody2D>().angularVelocity = 0f;
 		transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
 		transform.Find("God").gameObject.SetActive(false);
+		if (GetComponent<Rigidbody2D>().velocity.x < MoveSpeedInitialize)
+			GetComponent<Rigidbody2D>().velocity +=new Vector2(MoveSpeedInitialize- GetComponent<Rigidbody2D>().velocity.x, 0f);
 		god = false;
 	}
 	void HGcol_mode2() {
@@ -179,9 +189,6 @@ public class HGCharacterController : MonoBehaviour {
 		}
 	}
 	void HGm_back() {
-		//HGBlock.Clear();
-		//HGObjectPool.GetIns().Clear();
-		//HGPreloader.Load(0);
 		GamePause();
 	}
 	void HGc_mode_end() {
@@ -201,7 +208,6 @@ public class HGCharacterController : MonoBehaviour {
 	}
 	void HGc_mode_pause() {
 		if (Input.GetButtonDown("Jump")) {
-//			SceneManager.UnloadSceneAsync(4);
 			GameContinue();
 		}
 	}
@@ -246,6 +252,7 @@ public class HGCharacterController : MonoBehaviour {
 	void HGc_mode_Start() {
 		if (started) return;
 		Character.ResetHP();
+		BGMLoader.PlayBGM();
 		started = true;
 		Animator.HGanim_start();
 		GetComponent<Rigidbody2D>().velocity = new Vector2(0f , 1f);

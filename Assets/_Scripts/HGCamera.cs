@@ -13,8 +13,6 @@ public class HGCamera :  MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         CharacterEntity = GameObject.FindWithTag("Character_");
-		GetComponent<AudioSource>().clip = HGAudioLoader.Load(string.Format("bgm ({0})",HGOpinionLoader.OPtemp.BgmID));
-		GetComponent<AudioSource>().Play();
 	}
 	
 	// Update is called once per frame

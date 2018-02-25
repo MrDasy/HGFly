@@ -2234,7 +2234,7 @@ MonoBehaviour:
   MoveSpeedUpInterval: 0.5
   MoveSpeedInitialize: 8
   RotateSpeed: 2
-  HitDamage: 10
+  HurtDamage: 20
   PauseUI: {fileID: 261530955}
   SpeedUI: {fileID: 2031565575}
   HPUI: {fileID: 478053238}
@@ -2763,7 +2763,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 5
   m_Sprite: {fileID: 21300000, guid: 9a112cd12c32f4b42a49fd4d30f41faf, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -2787,6 +2787,7 @@ GameObject:
   - component: {fileID: 2024942368}
   - component: {fileID: 2024942374}
   - component: {fileID: 2024942372}
+  - component: {fileID: 2024942373}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -2937,6 +2938,17 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
+--- !u!114 &2024942373
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2024942367}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f43c3ca0ac92f7b4eaa11f7c53b22cd0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &2024942374
 MonoBehaviour:
   m_ObjectHideFlags: 0
