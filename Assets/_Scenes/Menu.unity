@@ -181,7 +181,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u53CD\u9988bug"
+  m_Text: "\u53CD\u9988bug(\u6682\u65F6\u79FB\u9664)"
 --- !u!222 &97417811
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -377,7 +377,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u6D4B\u8BD5\u7248\u672C 0222f\n2018.02.25"
+  m_Text: "\u6D4B\u8BD5\u7248\u672C 0222i\n2018.02.28"
 --- !u!222 &261075781
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1025,7 +1025,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: hgeek_hgfly@outlook.com
+  m_Text: hgfly@hgeek.club
 --- !u!222 &1412047900
 CanvasRenderer:
   m_ObjectHideFlags: 0

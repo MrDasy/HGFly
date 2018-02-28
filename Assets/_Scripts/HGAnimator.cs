@@ -1,7 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+/*
+ *动画接口，不涉及人物其他方面
+ * 在每个函数中加入关于美工的代码
+ * 在相应时刻会自动调用
+ * 可将测试用的贴图代码删除
+ */
 public class HGAnimator : MonoBehaviour {
 	//数据
 	private float jumpstay;//test
@@ -57,7 +62,14 @@ public class HGAnimator : MonoBehaviour {
 	public void HGanim_run() {
 		Test_SetTexture(4);
 	}
-
+	//无敌生成光圈
+	public void HGanim_godEnable() {
+		transform.Find("God").gameObject.SetActive(true);
+	}
+	//无敌光圈消失（3秒后）
+	public void HGanim_godDisable() {
+		transform.Find("God").gameObject.SetActive(false);
+	}
 	void Test_SetTexture(int ord) {
 		if (TextureOrd == ord) return;
 		if (ord != 1 && jumptime > 0) return;

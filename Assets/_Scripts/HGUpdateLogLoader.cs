@@ -6,9 +6,18 @@ using UnityEngine.UI;
 using System.Text;
 
 public class HGUpdateLogLoader : MonoBehaviour {
-	
 	void Start () {
-		FileStream FS = new FileStream("updatelog.das", FileMode.OpenOrCreate, FileAccess.Read);
+		string path =
+#if UNITY_ANDROID
+                    "!\\assets\\updatelog.das";
+#elif UNITY_IPHONE
+					Application.dataPath+"/Raw/updatelog.das";
+#elif UNITY_STANDALONE_WIN || UNITY_EDITOR
+					Application.dataPath + "\\StreamingAssets\\updatelog.das";
+#else
+                    string.Empty;  
+#endif
+		FileStream FS = new FileStream(path, FileMode.OpenOrCreate, FileAccess.Read);
 		int fsLen = (int)FS.Length;
 		byte[] bytes = new byte[fsLen];
 		char[] data = new char[fsLen];

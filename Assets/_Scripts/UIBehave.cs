@@ -73,16 +73,20 @@ public class UIBehave : MonoBehaviour {
 		charc.GetComponent<HGCharacterController>().GameContinue();
 	}
 
-	public void BugReporterOpen() {
+	/*public void BugReporterOpen() {
 		SceneManager.LoadScene(5, LoadSceneMode.Additive);
 	}
 
 	public void BugReporterClose() {
 		SceneManager.UnloadSceneAsync(5);
-	}
+	}*/
 
-	public void BugSend(GameObject inf) {
+	/*public void BugSend(GameObject inf) {
 		string data = inf.GetComponent<InputField>().text;
-		HGEMailSender.SendMail(data);
+		StartCoroutine("SendEmail", data);
 	}
+	IEnumerator SendEmail(string data) {
+		HGEMailSender.SendMail_chalk(data);
+		return null;
+	}*/
 }

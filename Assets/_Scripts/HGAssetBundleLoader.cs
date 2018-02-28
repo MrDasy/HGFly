@@ -11,11 +11,9 @@ public class HGAssetBundleLoader : MonoBehaviour {
 #if UNITY_ANDROID
                     "jar:file://" + Application.dataPath + "!/assets/";
 #elif UNITY_IPHONE
-                    Application.dataPath + "/Raw/";  
-#elif UNITY_STANDALONE_WIN
-                    "file://" + Application.dataPath + "/StreamingAssets/";
-#elif UNITY_EDITOR
-					"file://" + Application.dataPath + "/_AssetBundles/";
+                    "file://"+Application.dataPath + "/Raw/IOS_AB/";  
+#elif UNITY_STANDALONE_WIN || UNITY_EDITOR
+					"file://" + Application.dataPath + "/StreamingAssets/WIN_AB/";
 #else
                     string.Empty;  
 #endif
@@ -31,6 +29,8 @@ public class HGAssetBundleLoader : MonoBehaviour {
 		if (!bundles.TryGetValue(FileName, out bundle)) {
 			print(FileName);
 			WWW loader = new WWW(BundleURL + FileName);
+			while (!loader.isDone) { };
+			print(BundleURL + FileName);
 			bundle = loader.assetBundle;
 			bundles.Add(FileName, bundle);
 		} //else print("matched");

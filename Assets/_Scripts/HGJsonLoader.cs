@@ -6,6 +6,16 @@ using System.Text;
 using LitJson;
 
 public class HGJsonLoader {
+	static string path =
+#if UNITY_ANDROID
+                    "!\\assets\\";
+#elif UNITY_IPHONE
+					Application.dataPath+"/Raw/";
+#elif UNITY_STANDALONE_WIN || UNITY_EDITOR
+					Application.dataPath + "\\StreamingAssets\\";
+#else
+                    string.Empty;  
+#endif
 	static FileStream FS =null;
 	static int len = 2048;
 	public static void Unload() {
@@ -14,7 +24,7 @@ public class HGJsonLoader {
 	}
 	public static T BasicRead<T>(string filename) 
 	where T:class{
-		FS = new FileStream(filename, FileMode.Open, FileAccess.Read);
+		FS = new FileStream(path+filename, FileMode.Open, FileAccess.Read);
 		int fsLen = (int)FS.Length;
 		byte[] bytes = new byte[fsLen];
 		char[] data = new char[fsLen];
@@ -29,7 +39,7 @@ public class HGJsonLoader {
 
 	public static void BasicWrite<T>(T target,string filename) 
 	where T:class{
-		FS = new FileStream(filename, FileMode.Create, FileAccess.Write);
+		FS = new FileStream(path+filename, FileMode.Create, FileAccess.Write);
 		string jsondata = JsonMapper.ToJson(target);
 		Debug.Log(jsondata);
 		byte[] bytes = new byte[jsondata.Length];

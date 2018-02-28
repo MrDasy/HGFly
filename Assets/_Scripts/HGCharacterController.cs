@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityStandardAssets.CrossPlatformInput;
 
 //控制人物移动
 public class HGCharacterController : MonoBehaviour {
@@ -27,7 +28,6 @@ public class HGCharacterController : MonoBehaviour {
 	private HGAnimator Animator;
 	private GameObject Environment;
 	private HGBGMLoader BGMLoader;
-	private bool landing = false;
 	private string[] ModeOp = new string[11];
 	private HGBlockType ModeTemp;
 	private bool started = false;
@@ -65,7 +65,7 @@ public class HGCharacterController : MonoBehaviour {
 	}//test
 	void Update () {
 		StatUIUpdate();
-		if (Input.GetButtonDown("Cancel")) {
+		if (CrossPlatformInputManager.GetButtonDown("Cancel")) {
 			HGm_back();
 			return;
 		}
@@ -94,7 +94,6 @@ public class HGCharacterController : MonoBehaviour {
 	}
 
     void OnCollisionEnter2D(Collision2D collision) {
-		landing = true;
 		if (collision.gameObject.name == "Ground")
 			PlayAudio("fall");
 		else PlayAudio("hit");
@@ -105,7 +104,7 @@ public class HGCharacterController : MonoBehaviour {
 				HGcol_mode1();
 				break;
 			case HGBlockType.Mode_Runner:
-				HGcol_mode2();
+				HGcol_mode2(collision);
 				break;
 			default:
 				break;
@@ -117,13 +116,14 @@ public class HGCharacterController : MonoBehaviour {
 			god = true;
 			print("godded");
 			PlayAudio("hurt");
-			transform.Find("God").gameObject.SetActive(true);
+			Animator.HGanim_godEnable();
 			GetComponent<Rigidbody2D>().angularVelocity = 0f;
 			if (GetComponent<Rigidbody2D>().velocity.x < MoveSpeedInitialize/2)
 				GetComponent<Rigidbody2D>().velocity += new Vector2(MoveSpeedInitialize/2 - GetComponent<Rigidbody2D>().velocity.x, 0f);
 			Invoke("OnDamaged", 3f);
 			return;
 		}
+		GetComponent<Rigidbody2D>().freezeRotation = false;
 		Character.UpdateMode(HGBlockType.Mode_End);
 		StopCoroutine("AutoAddSpeed");
 		GetComponent<Rigidbody2D>().velocity = new Vector2(0f, 0f);
@@ -138,19 +138,18 @@ public class HGCharacterController : MonoBehaviour {
 	void OnDamaged() {
 		GetComponent<Rigidbody2D>().angularVelocity = 0f;
 		transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
-		transform.Find("God").gameObject.SetActive(false);
+		Animator.HGanim_godDisable();
 		if (GetComponent<Rigidbody2D>().velocity.x < MoveSpeedInitialize)
 			GetComponent<Rigidbody2D>().velocity +=new Vector2(MoveSpeedInitialize- GetComponent<Rigidbody2D>().velocity.x, 0f);
 		god = false;
 	}
-	void HGcol_mode2() {
-		StopCoroutine("PlayStep");
-		StartCoroutine("PlayStep");
+	void HGcol_mode2(Collision2D col) {
+		if (col.transform.parent.name.Equals("Runner_prefab(Clone)"))
+			StartCoroutine("PlayStep");
 		print("landed\n");
 	}
 
 	void OnCollisionStay2D() {
-		landing = true;
 		switch (Character.GetMode()) {
 			case HGBlockType.Mode_Flypee:
 			case HGBlockType.Mode_SkyBattle:
@@ -169,13 +168,13 @@ public class HGCharacterController : MonoBehaviour {
 		}
 	}
 	void OnCollisionExit2D() {
-		landing = false;
+
 		switch (Character.GetMode()) {
 			case HGBlockType.Mode_Flypee:
 			case HGBlockType.Mode_SkyBattle:
 				break;
 			case HGBlockType.Mode_Runner:
-				
+				StopCoroutine("PlayStep");
 				break;
 			default:
 				break;
@@ -192,7 +191,7 @@ public class HGCharacterController : MonoBehaviour {
 		GamePause();
 	}
 	void HGc_mode_end() {
-		if (Input.GetButtonDown("Restart")) {
+		if (CrossPlatformInputManager.GetButtonDown("Jump")) {
 			print("Reseted\n");
 			transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
 			transform.position = new Vector2(0f, HeightInitialize);
@@ -207,7 +206,7 @@ public class HGCharacterController : MonoBehaviour {
 		}
 	}
 	void HGc_mode_pause() {
-		if (Input.GetButtonDown("Jump")) {
+		if (CrossPlatformInputManager.GetButtonDown("Jump")) {
 			GameContinue();
 		}
 	}
@@ -219,13 +218,10 @@ public class HGCharacterController : MonoBehaviour {
 			Animator.HGanim_rise();
 		else
 			Animator.HGanim_fall();
-		if (Input.GetButtonDown("Jump")) {
+		if (CrossPlatformInputManager.GetButtonDown("Jump")) {
 			Animator.HGanim_jump();
 			PlayAudio("jump");
 			GetComponent<Rigidbody2D>().velocity += new Vector2(0f, JumpSpeed > GetComponent<Rigidbody2D>().velocity.y ? JumpSpeed - GetComponent<Rigidbody2D>().velocity.y : JumpSpeed / 2);
-		}
-		if (Input.GetButtonDown("Pause")) {
-			GamePause();
 		}
 	}
 	void HGc_mode_sky() {
@@ -234,8 +230,7 @@ public class HGCharacterController : MonoBehaviour {
 	void HGc_mode_runner() {
 		GetComponent<Rigidbody2D>().velocity = new Vector2(MoveSpeedInitialize, GetComponent<Rigidbody2D>().velocity.y);
 		
-		if (landing)
-		if (Input.GetButtonDown("Jump")) {
+		if (CrossPlatformInputManager.GetButtonDown("Jump")) {
 			StopCoroutine("PlayStep");
 			PlayAudio("jump");
 			GetComponent<Rigidbody2D>().angularVelocity = 0f;
@@ -243,9 +238,6 @@ public class HGCharacterController : MonoBehaviour {
 				transform.localRotation = Quaternion.Euler(180f, 0f, 0f);
 			else transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
 			GetComponent<ConstantForce2D>().force = -GetComponent<ConstantForce2D>().force;
-		}
-		if (Input.GetButtonDown("Pause")) {
-			GamePause();
 		}
 	}
 
@@ -256,6 +248,7 @@ public class HGCharacterController : MonoBehaviour {
 		started = true;
 		Animator.HGanim_start();
 		GetComponent<Rigidbody2D>().velocity = new Vector2(0f , 1f);
+		GetComponent<Rigidbody2D>().freezeRotation = true;
 		StartCoroutine(StartSpeedUp(6.5f));	
 	}
 
@@ -320,7 +313,6 @@ public class HGCharacterController : MonoBehaviour {
 	}
 
 	void UIInit() {
-		transform.Find("God").gameObject.SetActive(false);
 		PauseUI.SetActive(false);
 	}
 
