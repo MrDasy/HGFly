@@ -5,10 +5,12 @@ using UnityEngine;
 public class HGModeUpdater : MonoBehaviour {
 	public HGBlockType Mode;
 	private bool able = true;
+	private string[] nameord = { "grass2.psd","playground2.psd","corridor1.psd"};
 
     void OnTriggerEnter2D(Collider2D collider) {
 		if (collider.gameObject.name.Equals("Character")&& able) {
 			print("mode updated\n");
+			HGBackgroundLoader.ChangeTo(nameord[(int)Mode]);
 			able = false;
 			collider.GetComponent<HGCharacter>().UpdateMode(Mode);
 			GameObject.FindWithTag("Environment_").GetComponent<HGEnvironment>().Environ_Update();

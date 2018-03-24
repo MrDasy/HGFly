@@ -8,6 +8,8 @@ TagManager:
   - Character_
   - Timer_
   - Pause_
+  - BG1
+  - BG2
   layers:
   - Default
   - TransparentFX

@@ -60,11 +60,10 @@ public class HGCharacterController : MonoBehaviour {
 	}
 
 	void StatUIUpdate() {
-		SpeedUI.text = string.Format("速度：{0}", GetComponent<Rigidbody2D>().velocity.x);
 		HPUI.text = string.Format("血量：{0}", Character.GetHP());
 	}//test
 	void Update () {
-		StatUIUpdate();
+		//StatUIUpdate();
 		if (CrossPlatformInputManager.GetButtonDown("Cancel")) {
 			HGm_back();
 			return;
@@ -113,6 +112,7 @@ public class HGCharacterController : MonoBehaviour {
 	void HGcol_mode1() {
 		if (god) return;
 		if (Character.Damage(HitDamage)) {
+			HPUI.text = string.Format("血量：{0}", Character.GetHP());
 			god = true;
 			print("godded");
 			PlayAudio("hurt");
@@ -123,6 +123,7 @@ public class HGCharacterController : MonoBehaviour {
 			Invoke("OnDamaged", 3f);
 			return;
 		}
+		HPUI.text = string.Format("血量：{0}", Character.GetHP());
 		GetComponent<Rigidbody2D>().freezeRotation = false;
 		Character.UpdateMode(HGBlockType.Mode_End);
 		StopCoroutine("AutoAddSpeed");
@@ -244,6 +245,7 @@ public class HGCharacterController : MonoBehaviour {
 	void HGc_mode_Start() {
 		if (started) return;
 		Character.ResetHP();
+		HPUI.text = string.Format("血量：{0}", Character.GetHP());
 		BGMLoader.PlayBGM();
 		started = true;
 		Animator.HGanim_start();

@@ -6,25 +6,27 @@ using System.Text;
 using LitJson;
 
 public class HGJsonLoader {
-	static string path =
-#if UNITY_ANDROID
-                    "!\\assets\\";
-#elif UNITY_IPHONE
-					Application.dataPath+"/Raw/";
-#elif UNITY_STANDALONE_WIN || UNITY_EDITOR
-					Application.dataPath + "\\StreamingAssets\\";
-#else
-                    string.Empty;  
-#endif
 	static FileStream FS =null;
 	static int len = 2048;
+
 	public static void Unload() {
 		FS.Flush();
 		FS.Close();
 	}
+
 	public static T BasicRead<T>(string filename) 
-	where T:class{
-		FS = new FileStream(path+filename, FileMode.Open, FileAccess.Read);
+	where T:class,new(){
+		string patht = Application.dataPath;
+		string newpath = patht+"/dasdata";
+		Directory.CreateDirectory(newpath);
+		string filepath = newpath+"/"+filename;
+		if (!File.Exists(filepath)) {
+			Debug.Log(filepath);
+			T newTarget=new T();
+			BasicWrite<T>(newTarget, filename);
+			return newTarget;
+		}
+		FS = new FileStream(filepath, FileMode.Open, FileAccess.Read);
 		int fsLen = (int)FS.Length;
 		byte[] bytes = new byte[fsLen];
 		char[] data = new char[fsLen];
@@ -39,7 +41,11 @@ public class HGJsonLoader {
 
 	public static void BasicWrite<T>(T target,string filename) 
 	where T:class{
-		FS = new FileStream(path+filename, FileMode.Create, FileAccess.Write);
+		string patht = Application.dataPath;
+		string newpath = patht + "/dasdata";
+		Directory.CreateDirectory(newpath);
+		string filepath = newpath + "/" + filename;
+		FS = new FileStream(filepath, FileMode.Create, FileAccess.Write);
 		string jsondata = JsonMapper.ToJson(target);
 		Debug.Log(jsondata);
 		byte[] bytes = new byte[jsondata.Length];
@@ -48,10 +54,15 @@ public class HGJsonLoader {
 		FS.Seek(0,SeekOrigin.Begin);
 		FS.Write(bytes, 0, bytes.Length);
 	}
-	
+
 }
 
 public class HGOpinion {
+	public HGOpinion() {
+		GodMode=false;
+		Seed = "022120121";
+		BgmID = 0;
+	}
 	public bool GodMode { set; get; }
 	public string Seed { set; get; }
 	public int BgmID { set; get; }

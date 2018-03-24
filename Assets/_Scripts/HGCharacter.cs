@@ -55,6 +55,11 @@ public class HGCharacter : MonoBehaviour {
 }
 
 public class CharacterStat {
+	public CharacterStat() {
+		TimeMin = 0;
+		TimeSec = 0;
+		Score = 0;
+	}
 	public int TimeMin { set; get; }
 	public int TimeSec { set; get; }
 	public int Score { set; get; }

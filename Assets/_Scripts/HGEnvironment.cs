@@ -17,6 +17,7 @@ public class HGEnvironment : MonoBehaviour {
 	void Awake() {
 		ra = new System.Random();
 		HGAssetBundleLoader.GetIns().GetBundle("prefabs");
+		HGBackgroundLoader.Init();
 		HGAudioLoader.Init();
 	}
 	void Start () {

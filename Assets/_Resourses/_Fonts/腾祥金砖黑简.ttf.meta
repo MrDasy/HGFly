@@ -1,0 +1,23 @@
+fileFormatVersion: 2
+guid: a4f0f05f0f8ed0743b6a279455cda5bb
+timeCreated: 1521801912
+licenseType: Free
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Tensentype JinZhuanHeiJ
+  fontNames:
+  - Tensentype JinZhuanHeiJ
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

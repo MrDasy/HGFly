@@ -1,0 +1,25 @@
+fileFormatVersion: 2
+guid: fbed387415d803846a2efe8de2862530
+timeCreated: 1521801913
+licenseType: Free
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: RTWS ShangGothic G0v1
+  fontNames:
+  - RTWS ShangGothic G0v1
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 48c2134281ca4814280b994e54f40197, type: 3}
+  - {fileID: 12800000, guid: d6d5498897c17ac428880e936ce168f7, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

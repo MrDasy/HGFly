@@ -1,1 +1,0 @@
-{"GodMode":false,"Seed":"0120","BgmID":0}
