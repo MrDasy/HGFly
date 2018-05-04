@@ -11,6 +11,7 @@ public class HGCharacter : MonoBehaviour {
 	//--------------------
 	//人物状态----------
 	private int Score=0;
+	private int FinalScore = 0;
 	private HGBlockType GameMode=HGBlockType.Mode_Start;
 	private int HitPoint;
      //-------------------
@@ -29,11 +30,16 @@ public class HGCharacter : MonoBehaviour {
 
 	public void UpdateScore() {
 		Score++;
-		ScoreUI.text = string.Format("分数: {0}",Score);
+		ScoreUI.text = string.Format("分数: {0}",GetFinalScore());
 	}
 	public void ResetScore() {
 		Score = 0;
-		ScoreUI.text = string.Format("分数: {0}", Score);
+		FinalScore = 0;
+		ScoreUI.text = string.Format("分数: {0}", 0);
+	}
+
+	public void UpdateScorePRSEC() {
+		ScoreUI.text = string.Format("分数: {0}", GetFinalScore());
 	}
 
 	public int GetScore() {
@@ -51,6 +57,11 @@ public class HGCharacter : MonoBehaviour {
 
 	public int GetHP() {
 		return HitPoint;
+	}
+
+	public int GetFinalScore() {
+		FinalScore = UITimer.GetTime()*1 + Score * 5;
+		return FinalScore;
 	}
 }
 

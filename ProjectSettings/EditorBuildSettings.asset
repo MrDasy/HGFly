@@ -12,7 +12,7 @@ EditorBuildSettings:
     path: Assets/_Scenes/MainGameScene.unity
     guid: 0eaef98da5016e74da0ddbf0e224d61e
   - enabled: 1
-    path: Assets/_Scenes/Opinion.unity
+    path: Assets/_Scenes/Option.unity
     guid: d4abccf8332d3dd42af2b96c6799af63
   - enabled: 1
     path: Assets/_Scenes/Loading.unity

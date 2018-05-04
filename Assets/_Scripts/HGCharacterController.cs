@@ -32,6 +32,7 @@ public class HGCharacterController : MonoBehaviour {
 	private HGBlockType ModeTemp;
 	private bool started = false;
 	private bool god=false;
+	private bool gameoverDelay;
 
 	//--------------------
 
@@ -93,14 +94,11 @@ public class HGCharacterController : MonoBehaviour {
 	}
 
     void OnCollisionEnter2D(Collision2D collision) {
-		if (collision.gameObject.name == "Ground")
-			PlayAudio("fall");
-		else PlayAudio("hit");
 
 		switch (Character.GetMode()) {
 			case HGBlockType.Mode_Flypee:
 			case HGBlockType.Mode_SkyBattle:
-				HGcol_mode1();
+				HGcol_mode1(collision);
 				break;
 			case HGBlockType.Mode_Runner:
 				HGcol_mode2(collision);
@@ -109,7 +107,10 @@ public class HGCharacterController : MonoBehaviour {
 				break;
 		}
 	}
-	void HGcol_mode1() {
+	void HGcol_mode1(Collision2D collision) {
+		if (collision.gameObject.name == "Ground")
+			PlayAudio("fall");
+		else PlayAudio("hit");
 		if (god) return;
 		if (Character.Damage(HitDamage)) {
 			HPUI.text = string.Format("血量：{0}", Character.GetHP());
@@ -123,6 +124,7 @@ public class HGCharacterController : MonoBehaviour {
 			Invoke("OnDamaged", 3f);
 			return;
 		}
+		StartCoroutine("GameOverDelay");
 		HPUI.text = string.Format("血量：{0}", Character.GetHP());
 		GetComponent<Rigidbody2D>().freezeRotation = false;
 		Character.UpdateMode(HGBlockType.Mode_End);
@@ -132,21 +134,32 @@ public class HGCharacterController : MonoBehaviour {
 		CharacterStat statt = UITimer.GetStat();
 		HGJsonLoader.BasicWrite<CharacterStat>(statt, ".temp");
 		HGJsonLoader.Unload();
+		HGRankStat statt2 = new HGRankStat();
+		statt2.Stat = statt;
+		statt2.Userid = "000000";
+		statt2.Username = HGMenuPreload.user;
+		HGRankListLoader.AddRec(statt2);
 		UITimer.StopTiming();
 		SceneManager.LoadSceneAsync(4, LoadSceneMode.Additive);
 		BGMLoader.StopBGM();
 	}
+	IEnumerator GameOverDelay() {
+		gameoverDelay = true;
+		for (float timer = HGGameOverLoader.Delay; timer > 0; timer -= Time.deltaTime)
+			yield return null;
+		gameoverDelay = false;
+	}
 	void OnDamaged() {
 		GetComponent<Rigidbody2D>().angularVelocity = 0f;
-		transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
+		if (Character.GetMode()!=HGBlockType.Mode_Runner) transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
 		Animator.HGanim_godDisable();
 		if (GetComponent<Rigidbody2D>().velocity.x < MoveSpeedInitialize)
 			GetComponent<Rigidbody2D>().velocity +=new Vector2(MoveSpeedInitialize- GetComponent<Rigidbody2D>().velocity.x, 0f);
 		god = false;
 	}
 	void HGcol_mode2(Collision2D col) {
-		if (col.transform.parent.name.Equals("Runner_prefab(Clone)"))
-			StartCoroutine("PlayStep");
+		//if (col.transform.parent.name.Equals("Runner_prefab(Clone)"))
+			//StartCoroutine("PlayStep");
 		print("landed\n");
 	}
 
@@ -191,7 +204,11 @@ public class HGCharacterController : MonoBehaviour {
 	void HGm_back() {
 		GamePause();
 	}
+	void SpeedLock() {
+		GetComponent<Rigidbody2D>().velocity += new Vector2(MoveSpeedInitialize > GetComponent<Rigidbody2D>().velocity.x ? MoveSpeedInitialize - GetComponent<Rigidbody2D>().velocity.x : 0, 0);
+	}
 	void HGc_mode_end() {
+		if (gameoverDelay) return;
 		if (CrossPlatformInputManager.GetButtonDown("Jump")) {
 			print("Reseted\n");
 			transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
@@ -212,8 +229,7 @@ public class HGCharacterController : MonoBehaviour {
 		}
 	}
 	void HGc_mode_flypee() {
-		if (OP.GodMode && GetComponent<Rigidbody2D>().velocity.x < MoveSpeedInitialize)
-			GetComponent<Rigidbody2D>().velocity = new Vector2(MoveSpeedInitialize, GetComponent<Rigidbody2D>().velocity.y);
+		SpeedLock();
 
 		if (GetComponent<Rigidbody2D>().velocity.y > 0)
 			Animator.HGanim_rise();
@@ -229,8 +245,7 @@ public class HGCharacterController : MonoBehaviour {
 		HGc_mode_flypee();
 	}
 	void HGc_mode_runner() {
-		GetComponent<Rigidbody2D>().velocity = new Vector2(MoveSpeedInitialize, GetComponent<Rigidbody2D>().velocity.y);
-		
+		SpeedLock();
 		if (CrossPlatformInputManager.GetButtonDown("Jump")) {
 			StopCoroutine("PlayStep");
 			PlayAudio("jump");

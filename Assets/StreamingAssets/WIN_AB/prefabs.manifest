@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 2153791897
+CRC: 1325613243
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: ed7fa3802942e72cf06e7718f63422d4
+    Hash: 4151949dc2035a8f6661fdf3c38cfccb
   TypeTreeHash:
     serializedVersion: 2
     Hash: 96f1e13121a40aeb241e99bb442a066e
@@ -47,19 +47,16 @@ ClassTypes:
   Script: {instanceID: 0}
 Assets:
 - Assets/_Resourses/_Prefabs/Missile_.prefab
-- Assets/_Resourses/_Textures/squad.psd
 - Assets/_Resourses/_Prefabs/Start_Prefab.prefab
+- Assets/_Resourses/_Textures/ObDown 1.psd
 - Assets/_Resourses/_Textures/Emitter.psd
 - Assets/_Resourses/_PhysicMat/Ball.physicsMaterial2D
-- Assets/_Resourses/_Textures/Background1.psd
-- Assets/_Resourses/_Textures/character.psd
-- Assets/_Resourses/_Prefabs/Book_.prefab
 - Assets/_Resourses/_Prefabs/Flypee_Prefab.prefab
 - Assets/_Resourses/_Prefabs/Runner_prefab.prefab
-- Assets/_Resourses/_Textures/coin.psd
 - Assets/_Resourses/_Prefabs/SkyBattle_Prefab.prefab
 - Assets/_Resourses/_Prefabs/Coins_.prefab
 - Assets/_Resourses/_Textures/football.psd
+- Assets/_Resourses/_Textures/ObUp 1.psd
 - Assets/_Resourses/_PhysicMat/Ob.physicsMaterial2D
 - Assets/_Resourses/_Textures/niao.png
 Dependencies: []

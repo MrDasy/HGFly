@@ -4,8 +4,9 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class HGPreloader{
+	public static AsyncOperation async;
 	public static void Load(int sceneord) {
 		SceneManager.LoadSceneAsync(3);
-		SceneManager.LoadSceneAsync(sceneord);
+		async=SceneManager.LoadSceneAsync(sceneord);
 	}
 }

@@ -15,9 +15,10 @@ public class HGBGMLoader : MonoBehaviour {
 	
 	public void PlayBGM() {
 		if (GetComponent<AudioSource>().isPlaying) return;
-		BGMID = HGOpinionLoader.OPtemp.BgmID;
-		if (BGMID < 1 || BGMID > 16)
-			BGMID = ra.Next(1, 100) % 16;
+		//BGMID = HGOpinionLoader.OPtemp.BgmID;
+		//if (BGMID < 1 || BGMID > 16)
+		//	BGMID = ra.Next(1, 160) % 16+1;
+		BGMID = 11;
 		GetComponent<AudioSource>().clip = HGAudioLoader.Load(string.Format("bgm ({0})", BGMID));
 		GetComponent<AudioSource>().Play();
 	}

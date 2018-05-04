@@ -7,6 +7,7 @@ public class HGOpinionLoader : MonoBehaviour {
 	public static HGOpinion OPtemp;
 	public GameObject Seedt;
 	public GameObject bgmid;
+	public GameObject username;
 
 	public static void Init() {
 		OPtemp = HGJsonLoader.BasicRead<HGOpinion>("config.das");
@@ -14,6 +15,7 @@ public class HGOpinionLoader : MonoBehaviour {
 	}
 	void Start () {
 		Init();
+		username.GetComponent<InputField>().text = HGMenuPreload.user;
 		Invoke("UpdateOpinion", 0f);
 	}
 

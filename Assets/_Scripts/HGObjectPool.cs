@@ -37,6 +37,5 @@ public class HGObjectPool : MonoBehaviour {
 
 	public void Clear() {
 		pool.Clear();
-		print("erased");
 	}
 }
